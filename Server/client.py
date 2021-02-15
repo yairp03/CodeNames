@@ -1,6 +1,7 @@
 import states
 import codes
 from database import db, User
+from hashlib import md5
 
 
 class Message:
@@ -51,12 +52,14 @@ class Client:
     def login(self, data):
         try:
             username = data["username"]
-            hashed_password = data["password"]
+            password = data["password"]
         except (KeyError, TypeError):
             return BAD_MESSAGE_DATA
         user_rows = db.query(User).filter(User.username == username)
         if len(user_rows.all()) == 1:
-            user_pass_rows = user_rows.filter(User.password == hashed_password)
+            user_pass_rows = user_rows.filter(
+                User.password == md5(password).hexdigest()
+            )
             if len(user_pass_rows.all()) == 1:
                 self.state = states.MAIN
                 return Message(codes.LOGIN_SUCCESS)
@@ -68,13 +71,13 @@ class Client:
     def signup(self, data):
         try:
             username = data["username"]
-            hashed_password = data["password"]
+            password = data["password"]
         except (KeyError, TypeError):
             return BAD_MESSAGE_DATA
         if len(db.query(User).filter(User.username == username).all()) == 1:
             return Message(codes.SIGNUP_FAILED, "User already exists")
         else:
-            user = User(username=username, password=hashed_password)
+            user = User(username=username, password=md5(password).hexdigest())
             db.add(user)
             db.commit()
             self.state = states.MAIN
