@@ -58,7 +58,7 @@ class Client:
         user_rows = db.query(User).filter(User.username == username)
         if len(user_rows.all()) == 1:
             user_pass_rows = user_rows.filter(
-                User.password == md5(password).hexdigest()
+                User.password == md5(password.encode()).hexdigest()
             )
             if len(user_pass_rows.all()) == 1:
                 self.state = states.MAIN
@@ -77,7 +77,7 @@ class Client:
         if len(db.query(User).filter(User.username == username).all()) == 1:
             return Message(codes.SIGNUP_FAILED, "User already exists")
         else:
-            user = User(username=username, password=md5(password).hexdigest())
+            user = User(username=username, password=md5(password.encode()).hexdigest())
             db.add(user)
             db.commit()
             self.state = states.MAIN
