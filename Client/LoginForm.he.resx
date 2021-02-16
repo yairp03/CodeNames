@@ -117,13 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="USERNAME_ALREADY_EXISTS" xml:space="preserve">
-    <value>שם משתמש זה כבר קיים</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="username_textBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Berlin Sans FB, 15.75pt</value>
   </data>
-  <data name="USERNAME_DOESNT_EXISTS" xml:space="preserve">
-    <value>משתמש לא נמצא</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="username_textBox.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
   </data>
-  <data name="WRONG_PASSWORD" xml:space="preserve">
-    <value>סיסמא שגויה</value>
+  <data name="username_textBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 31</value>
+  </data>
+  <data name="password_textBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial Narrow, 15.75pt</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="password_textBox.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
+    <value>*</value>
+  </data>
+  <data name="password_textBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 32</value>
+  </data>
+  <data name="password_textBox.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="username_label.Location" type="System.Drawing.Point, System.Drawing">
+    <value>178, 129</value>
+  </data>
+  <data name="username_label.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 18</value>
+  </data>
+  <data name="password_label.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="password_label.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial Rounded MT Bold, 12pt</value>
+  </data>
+  <data name="password_label.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="password_label.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 18</value>
+  </data>
+  <data name="password_label.Text" xml:space="preserve">
+    <value>סיסמא:</value>
+  </data>
+  <data name="$this.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>Yes</value>
+  </data>
+  <data name="$this.RightToLeftLayout" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>שם קוד</value>
   </data>
 </root>

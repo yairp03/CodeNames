@@ -117,13 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="USERNAME_ALREADY_EXISTS" xml:space="preserve">
-    <value>שם משתמש זה כבר קיים</value>
-  </data>
-  <data name="USERNAME_DOESNT_EXISTS" xml:space="preserve">
-    <value>משתמש לא נמצא</value>
-  </data>
-  <data name="WRONG_PASSWORD" xml:space="preserve">
-    <value>סיסמא שגויה</value>
-  </data>
 </root>

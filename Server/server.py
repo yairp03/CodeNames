@@ -58,10 +58,10 @@ class Server:
             try:
                 msg = parse_message(req)
             except ValueError as e:
-                server_print(f"Bad data recieved: {req.encode()}", sock.getpeername())
+                server_print(f"Bad received: {req.encode()}", sock.getpeername())
                 msg = Message(BAD_MESSAGE, str(e))
             else:
-                server_print(f"Data recieved: {msg}", sock.getpeername())
+                server_print(f"Received: {msg}", sock.getpeername())
             return msg
         else:
             return Message()
@@ -76,7 +76,7 @@ class Server:
         )
 
         sock.send(msg.encode())
-        server_print(f"Data sent: {res}", sock.getpeername())
+        server_print(f"Sent:     {res}", sock.getpeername())
 
     @staticmethod
     def handle_console():

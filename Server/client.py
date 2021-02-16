@@ -1,3 +1,4 @@
+from sqlalchemy.sql.functions import user
 import states
 import codes
 from database import db, User
@@ -10,7 +11,7 @@ class Message:
         self.data = data
 
     def __str__(self):
-        return f"{self.code}: {str(self.data).encode()}"
+        return f"{codes.to_string(self.code)}: {str(self.data).encode()}"
 
     def __bool__(self):
         return self.code != 0
@@ -28,6 +29,7 @@ POSSIBLE_CODES = {
         codes.CREATE_ROOM,
         codes.GET_STATISTICS,
         codes.LOGOUT,
+        codes.DELETE_USER,
     ),
 }
 
@@ -37,6 +39,7 @@ class Client:
         self.sock = sock
         self.peername = sock.getpeername()
         self.state = states.NOT_AUTHORIZED
+        self.username = ""
 
     def handle_request(self, req: Message):
         if req.code not in POSSIBLE_CODES[self.state]:
@@ -48,6 +51,8 @@ class Client:
             return self.signup(req.data)
         elif req.code == codes.LOGOUT:
             return self.logout()
+        elif req.code == codes.DELETE_USER:
+            return self.delete_user()
 
     def login(self, data):
         try:
@@ -61,12 +66,12 @@ class Client:
                 User.password == md5(password.encode()).hexdigest()
             )
             if len(user_pass_rows.all()) == 1:
-                self.state = states.MAIN
+                self.login_success(username)
                 return Message(codes.LOGIN_SUCCESS)
             else:
-                return Message(codes.LOGIN_FAILED, "Wrong password")
+                return Message(codes.LOGIN_WRONG_PASSWORD)
         else:
-            return Message(codes.LOGIN_FAILED, "User doesn't exist")
+            return Message(codes.LOGIN_USERNAME_DOESNT_EXISTS)
 
     def signup(self, data):
         try:
@@ -75,14 +80,24 @@ class Client:
         except (KeyError, TypeError):
             return BAD_MESSAGE_DATA
         if len(db.query(User).filter(User.username == username).all()) == 1:
-            return Message(codes.SIGNUP_FAILED, "User already exists")
+            return Message(codes.SIGNUP_USERNAME_EXISTS)
         else:
             user = User(username=username, password=md5(password.encode()).hexdigest())
             db.add(user)
             db.commit()
-            self.state = states.MAIN
+            self.login_success(username)
             return Message(codes.SIGNUP_SUCCESS)
+
+    def login_success(self, username):
+        self.state = states.MAIN
+        self.username = username
 
     def logout(self):
         self.state = states.NOT_AUTHORIZED
         return Message(codes.LOGOUT_SUCCESS)
+
+    def delete_user(self):
+        self.logout()
+        db.query(User).filter(User.username == self.username).delete()
+        db.commit()
+        return Message(codes.DELETE_USER_SUCCESS)
