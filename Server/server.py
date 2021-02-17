@@ -8,7 +8,7 @@ import json
 from client import Message, Client
 from _utils import parse_message
 
-STOP = "stop"
+STOP_COMMANDS = "stop", "quit", "exit"
 CODE_LEN = 3
 LENGTH_LEN = 5
 
@@ -81,5 +81,5 @@ class Server:
     @staticmethod
     def handle_console():
         while s := input():
-            if s == STOP:
+            if s in STOP_COMMANDS:
                 sys.exit(1)
