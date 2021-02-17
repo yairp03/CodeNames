@@ -101,17 +101,19 @@ namespace Client
             SwitchMethod_Button.Text = methodIsLogin ? "<" : ">";
             ClearErrors();
 
-            if (!methodIsLogin)
-            {
-                RefreshCredentialsVerify();
-            }
-            else
+            if (methodIsLogin)
             {
                 CheckLoginCredentials();
-                foreach(Label vertificationLabel in CredentialsVerify_Panel.Controls)
+                Signup_Button.Enabled = false;
+                foreach (Label vertificationLabel in CredentialsVerify_Panel.Controls)
                 {
                     vertificationLabel.ForeColor = System.Drawing.SystemColors.ControlText;
                 }
+            }
+            else
+            {
+                Login_Button.Enabled = false;
+                RefreshCredentialsVerify();
             }
             
             foreach (var loginElement in loginElements)

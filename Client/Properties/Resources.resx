@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="INVALID_PASSWORD" xml:space="preserve">
+    <value>סיסמא לא חוקית</value>
+  </data>
+  <data name="INVALID_USERNAME" xml:space="preserve">
+    <value>שם משתמש לא חוקי</value>
+  </data>
   <data name="USERNAME_ALREADY_EXISTS" xml:space="preserve">
     <value>שם משתמש זה כבר קיים</value>
   </data>

@@ -8,7 +8,9 @@ import json
 from client import Message, Client
 from _utils import parse_message
 
+PRINT_ACTIVE_USERS = "active"
 STOP_COMMANDS = "stop", "quit", "exit"
+
 CODE_LEN = 3
 LENGTH_LEN = 5
 
@@ -16,10 +18,11 @@ LENGTH_LEN = 5
 class Server:
     def __init__(self, port):
         self.port = port
+        self.active_users = []
 
     def run(self):
         start_new_thread(self.listen, ())
-        Server.handle_console()
+        self.handle_console()
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,11 +35,10 @@ class Server:
         while True:
             c, addr = sock.accept()
             server_print(f"Connected to: {addr[0]}:{addr[1]}")
-            start_new_thread(Server.handle_user, (c,))
+            start_new_thread(self.handle_user, (c,))
 
-    @staticmethod
-    def handle_user(sock: socket.socket):
-        client = Client(sock)
+    def handle_user(self, sock: socket.socket):
+        client = Client(sock, self)
         while msg := Server.recv(sock):
             if msg.code == 0:
                 break
@@ -45,7 +47,7 @@ class Server:
             else:
                 res = client.handle_request(msg)
             Server.send(sock, res)
-        server_print("Disconnected", client.peername)
+        server_print("Disconnected", client.sock.getpeername())
         sock.close()
 
     @staticmethod
@@ -78,8 +80,9 @@ class Server:
         sock.send(msg.encode())
         server_print(f"Sent:     {res}", sock.getpeername())
 
-    @staticmethod
-    def handle_console():
-        while s := input():
+    def handle_console(self):
+        while s := input().lower():
             if s in STOP_COMMANDS:
                 sys.exit(1)
+            elif s == PRINT_ACTIVE_USERS:
+                print("Active users:", self.active_users)

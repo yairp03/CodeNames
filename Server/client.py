@@ -12,7 +12,7 @@ class Message:
         self.data = data
 
     def __str__(self):
-        return f"{codes.to_string(self.code)}: {str(self.data).encode()}"
+        return f"{codes.to_string(self.code)}: {str(str(self.data).encode())[1:]}"
 
     def __bool__(self):
         return self.code != 0
@@ -36,7 +36,8 @@ POSSIBLE_CODES = {
 
 
 class Client:
-    def __init__(self, sock):
+    def __init__(self, sock, server):
+        self.server = server
         self.sock = sock
         self.state = states.NOT_AUTHORIZED
         self.username = ""
@@ -109,9 +110,11 @@ class Client:
     def login_success(self, username):
         self.state = states.MAIN
         self.username = username
+        self.server.active_users.append(username)
 
     def logout(self):
         self.state = states.NOT_AUTHORIZED
+        self.server.active_users.remove(self.username)
         return Message(codes.LOGOUT_SUCCESS)
 
     def delete_user(self):
