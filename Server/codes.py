@@ -26,6 +26,8 @@ LOGIN_WRONG_PASSWORD = 113
 # Signup
 SIGNUP_SUCCESS = 121
 SIGNUP_USERNAME_EXISTS = 122
+SIGNUP_INVALID_USERNAME = 123
+SIGNUP_INVALID_PASSWORD = 124
 
 LOGOUT_SUCCESS = 131
 DELETE_USER_SUCCESS = 141
@@ -58,6 +60,8 @@ _string_codes = {
     LOGIN_WRONG_PASSWORD: "Login wrong password",
     SIGNUP_SUCCESS: "Signup success",
     SIGNUP_USERNAME_EXISTS: "Signup username exists",
+    SIGNUP_INVALID_USERNAME: "Signup invalid username",
+    SIGNUP_INVALID_PASSWORD: "Signup invalid password",
     LOGOUT_SUCCESS: "Logout Success",
     DELETE_USER_SUCCESS: "Delete User Success",
     ROOMS_LIST: "Rooms List",

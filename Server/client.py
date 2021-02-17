@@ -3,6 +3,7 @@ import states
 import codes
 from database import db, User
 from hashlib import md5
+import string
 
 
 class Message:
@@ -37,7 +38,6 @@ POSSIBLE_CODES = {
 class Client:
     def __init__(self, sock):
         self.sock = sock
-        self.peername = sock.getpeername()
         self.state = states.NOT_AUTHORIZED
         self.username = ""
 
@@ -81,12 +81,30 @@ class Client:
             return BAD_MESSAGE_DATA
         if len(db.query(User).filter(User.username == username).all()) == 1:
             return Message(codes.SIGNUP_USERNAME_EXISTS)
+        elif not self._validate_username(username):
+            return Message(codes.SIGNUP_INVALID_USERNAME)
+        elif not self._validate_password(password):
+            return Message(codes.SIGNUP_INVALID_PASSWORD)
         else:
             user = User(username=username, password=md5(password.encode()).hexdigest())
             db.add(user)
             db.commit()
             self.login_success(username)
             return Message(codes.SIGNUP_SUCCESS)
+
+    @staticmethod
+    def _validate_username(username: str):
+        for c in username:
+            if not (c.isalnum() or c == "_"):
+                return False
+        return True
+
+    @staticmethod
+    def _validate_password(password: str):
+        for c in password:
+            if not (c.isalnum() or c in string.punctuation):
+                return False
+        return True
 
     def login_success(self, username):
         self.state = states.MAIN
