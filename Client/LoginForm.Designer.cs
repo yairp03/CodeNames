@@ -56,18 +56,22 @@ namespace Client
             // 
             this.LoginUsername_TextBox.Font = new System.Drawing.Font("Berlin Sans FB", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginUsername_TextBox.Location = new System.Drawing.Point(569, 123);
+            this.LoginUsername_TextBox.MaxLength = 20;
             this.LoginUsername_TextBox.Name = "LoginUsername_TextBox";
             this.LoginUsername_TextBox.Size = new System.Drawing.Size(154, 31);
             this.LoginUsername_TextBox.TabIndex = 0;
+            this.LoginUsername_TextBox.TextChanged += new System.EventHandler(this.LoginUsername_TextBox_TextChanged);
             // 
             // LoginPassword_TextBox
             // 
             this.LoginPassword_TextBox.Font = new System.Drawing.Font("Berlin Sans FB", 15.75F);
             this.LoginPassword_TextBox.Location = new System.Drawing.Point(569, 199);
+            this.LoginPassword_TextBox.MaxLength = 16;
             this.LoginPassword_TextBox.Name = "LoginPassword_TextBox";
             this.LoginPassword_TextBox.PasswordChar = '*';
             this.LoginPassword_TextBox.Size = new System.Drawing.Size(154, 31);
             this.LoginPassword_TextBox.TabIndex = 1;
+            this.LoginPassword_TextBox.TextChanged += new System.EventHandler(this.LoginPassword_TextBox_TextChanged);
             // 
             // LoginUsername_Label
             // 
@@ -94,6 +98,7 @@ namespace Client
             // Login_Button
             // 
             this.Login_Button.AutoSize = true;
+            this.Login_Button.Enabled = false;
             this.Login_Button.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Login_Button.Location = new System.Drawing.Point(569, 291);
             this.Login_Button.Name = "Login_Button";
@@ -167,6 +172,7 @@ namespace Client
             this.SignupPassword_TextBox.Enabled = false;
             this.SignupPassword_TextBox.Font = new System.Drawing.Font("Berlin Sans FB", 15.75F);
             this.SignupPassword_TextBox.Location = new System.Drawing.Point(249, 199);
+            this.SignupPassword_TextBox.MaxLength = 16;
             this.SignupPassword_TextBox.Name = "SignupPassword_TextBox";
             this.SignupPassword_TextBox.PasswordChar = '*';
             this.SignupPassword_TextBox.Size = new System.Drawing.Size(154, 31);
@@ -178,6 +184,7 @@ namespace Client
             this.SignupUsername_TextBox.Enabled = false;
             this.SignupUsername_TextBox.Font = new System.Drawing.Font("Berlin Sans FB", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SignupUsername_TextBox.Location = new System.Drawing.Point(249, 123);
+            this.SignupUsername_TextBox.MaxLength = 20;
             this.SignupUsername_TextBox.Name = "SignupUsername_TextBox";
             this.SignupUsername_TextBox.Size = new System.Drawing.Size(154, 31);
             this.SignupUsername_TextBox.TabIndex = 7;

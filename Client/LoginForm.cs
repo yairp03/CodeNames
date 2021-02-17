@@ -89,10 +89,10 @@ namespace Client
 
         private void SwitchSigninMethod()
         {
-            Control[] loginElements = { LoginUsername_TextBox, LoginPassword_TextBox, Login_Button };
+            Control[] loginElements = { LoginUsername_TextBox, LoginPassword_TextBox };
             Control[] signupElements = { SignupUsername_TextBox, SignupPassword_TextBox, CredentialsVerify_Panel };
             methodIsLogin = !methodIsLogin;
-            SwitchMethod_Button.Text = SwitchMethod_Button.Text == ">" ? "<" : ">";
+            SwitchMethod_Button.Text = methodIsLogin ? "<" : ">";
             ClearErrors();
 
             if (!methodIsLogin)
@@ -101,6 +101,7 @@ namespace Client
             }
             else
             {
+                CheckLoginCredentials();
                 foreach(Label vertificationLabel in CredentialsVerify_Panel.Controls)
                 {
                     vertificationLabel.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -240,6 +241,21 @@ namespace Client
         private void SignupPassword_TextBox_TextChanged(object sender, EventArgs e)
         {
             RefreshCredentialsVerify();
+        }
+
+        private void LoginUsername_TextBox_TextChanged(object sender, EventArgs e)
+        {
+            CheckLoginCredentials();
+        }
+
+        private void CheckLoginCredentials()
+        {
+            Login_Button.Enabled = LoginUsername_TextBox.Text != "" && LoginPassword_TextBox.Text != "";
+        }
+
+        private void LoginPassword_TextBox_TextChanged(object sender, EventArgs e)
+        {
+            CheckLoginCredentials();
         }
     }
 }
