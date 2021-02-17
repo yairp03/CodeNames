@@ -61,6 +61,24 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to סיסמא לא חוקית.
+        /// </summary>
+        internal static string INVALID_PASSWORD {
+            get {
+                return ResourceManager.GetString("INVALID_PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to שם משתמש לא חוקי.
+        /// </summary>
+        internal static string INVALID_USERNAME {
+            get {
+                return ResourceManager.GetString("INVALID_USERNAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to שם משתמש זה כבר קיים.
         /// </summary>
         internal static string USERNAME_ALREADY_EXISTS {

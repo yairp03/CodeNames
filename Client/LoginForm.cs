@@ -49,6 +49,12 @@ namespace Client
                 case ResponseCodes.SIGNUP_USERNAME_EXISTS:
                     SignupErrorMessage_Label.Text = Properties.Resources.USERNAME_ALREADY_EXISTS;
                     break;
+                case ResponseCodes.SIGNUP_INVALID_USERNAME:
+                    SignupErrorMessage_Label.Text = Properties.Resources.INVALID_USERNAME;
+                    break;
+                case ResponseCodes.SIGNUP_INVALID_PASSWORD:
+                    SignupErrorMessage_Label.Text = Properties.Resources.INVALID_PASSWORD;
+                    break;
                 default:
                     break;
             }

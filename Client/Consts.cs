@@ -42,7 +42,9 @@ namespace Client
         // Signup
         public const int SIGNUP_SUCCESS = 121;
         public const int SIGNUP_USERNAME_EXISTS = 122;
-        
+        public const int SIGNUP_INVALID_USERNAME = 123;
+        public const int SIGNUP_INVALID_PASSWORD = 124;
+
         public const int LOGOUT_SUCCESS = 131;
         public const int DELETE_USER_SUCCESS = 141;
 
