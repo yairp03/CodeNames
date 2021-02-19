@@ -1,4 +1,4 @@
-from codes import BAD_MESSAGE
+from consts import ResponseCodes
 import socket
 import threading
 from _thread import *
@@ -42,8 +42,8 @@ class Server:
         while msg := Server.recv(sock):
             if msg.code == 0:
                 break
-            if msg.code == BAD_MESSAGE:
-                res = Message(BAD_MESSAGE, msg.data)
+            if msg.code == ResponseCodes.BAD_MESSAGE:
+                res = Message(ResponseCodes.BAD_MESSAGE, msg.data)
             else:
                 res = client.handle_request(msg)
             Server.send(sock, res)
@@ -61,7 +61,7 @@ class Server:
                 msg = parse_message(req)
             except ValueError as e:
                 server_print(f"Bad received: {req.encode()}", sock.getpeername())
-                msg = Message(BAD_MESSAGE, str(e))
+                msg = Message(ResponseCodes.BAD_MESSAGE, str(e))
             else:
                 server_print(f"Received: {msg}", sock.getpeername())
             return msg
