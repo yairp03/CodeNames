@@ -20,6 +20,7 @@ class ResponseCodes:
     LOGIN_SUCCESS = 111
     LOGIN_USERNAME_DOESNT_EXISTS = 112
     LOGIN_WRONG_PASSWORD = 113
+    LOGIN_USER_ACTIVE = 114
     # Signup
     SIGNUP_SUCCESS = 121
     SIGNUP_USERNAME_EXISTS = 122
@@ -63,6 +64,7 @@ _string_codes = {
     ResponseCodes.LOGIN_SUCCESS: "Login Success",
     ResponseCodes.LOGIN_USERNAME_DOESNT_EXISTS: "Login username doesn't exists",
     ResponseCodes.LOGIN_WRONG_PASSWORD: "Login wrong password",
+    ResponseCodes.LOGIN_USER_ACTIVE: "Login username active",
     ResponseCodes.SIGNUP_SUCCESS: "Signup success",
     ResponseCodes.SIGNUP_USERNAME_EXISTS: "Signup username exists",
     ResponseCodes.SIGNUP_INVALID_USERNAME: "Signup invalid username",
@@ -79,5 +81,5 @@ _string_codes = {
 }
 
 
-def to_string(code):
+def to_string(code: int) -> str:
     return _string_codes[code]

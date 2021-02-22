@@ -1,8 +1,9 @@
-from sqlalchemy.sql.functions import user
+from server import Server
 from consts import *
 from database import db, User
 from hashlib import md5
 import string
+import socket
 
 
 class Message:
@@ -21,40 +22,28 @@ BAD_MESSAGE_CODE = Message(ResponseCodes.BAD_MESSAGE, "Bad message code")
 BAD_MESSAGE_DATA = Message(ResponseCodes.BAD_MESSAGE, "Bad message data")
 
 
-POSSIBLE_CODES = {
-    States.NOT_AUTHORIZED: (RequestCodes.LOGIN, RequestCodes.SIGNUP),
-    States.MAIN: (
-        RequestCodes.LIST_ROOMS,
-        RequestCodes.JOIN_ROOM,
-        RequestCodes.CREATE_ROOM,
-        RequestCodes.GET_STATISTICS,
-        RequestCodes.LOGOUT,
-        RequestCodes.DELETE_USER,
-    ),
-}
-
-
 class Client:
-    def __init__(self, sock, server):
+    def __init__(self, sock: socket.socket, server: Server):
         self.server = server
         self.sock = sock
         self.state = States.NOT_AUTHORIZED
         self.username = ""
 
-    def handle_request(self, req: Message):
-        if req.code not in POSSIBLE_CODES[self.state]:
-            return BAD_MESSAGE_CODE
+    def handle_request(self, req: Message) -> Message:
+        if self.state == States.NOT_AUTHORIZED:
+            if req.code == RequestCodes.LOGIN:
+                return self.login(req.data)
+            elif req.code == RequestCodes.SIGNUP:
+                return self.signup(req.data)
+        elif self.state == States.MAIN:
+            if req.code == RequestCodes.LOGOUT:
+                return self.logout()
+            elif req.code == RequestCodes.DELETE_USER:
+                self.logout()
+                return self.delete_user()
+        return BAD_MESSAGE_CODE
 
-        if req.code == RequestCodes.LOGIN:
-            return self.login(req.data)
-        elif req.code == RequestCodes.SIGNUP:
-            return self.signup(req.data)
-        elif req.code == RequestCodes.LOGOUT:
-            return self.logout()
-        elif req.code == RequestCodes.DELETE_USER:
-            return self.delete_user()
-
-    def login(self, data):
+    def login(self, data: dict) -> Message:
         try:
             username = data["username"]
             password = data["password"]
@@ -66,6 +55,8 @@ class Client:
                 User.password == md5(password.encode()).hexdigest()
             )
             if len(user_pass_rows.all()) == 1:
+                if username in self.server.active_users:
+                    return Message(ResponseCodes.LOGIN_USER_ACTIVE)
                 self.login_success(username)
                 return Message(ResponseCodes.LOGIN_SUCCESS)
             else:
@@ -73,7 +64,7 @@ class Client:
         else:
             return Message(ResponseCodes.LOGIN_USERNAME_DOESNT_EXISTS)
 
-    def signup(self, data):
+    def signup(self, data: dict) -> Message:
         try:
             username = data["username"]
             password = data["password"]
@@ -93,31 +84,31 @@ class Client:
             return Message(ResponseCodes.SIGNUP_SUCCESS)
 
     @staticmethod
-    def _validate_username(username: str):
+    def _validate_username(username: str) -> bool:
         for c in username:
             if not (c.isalnum() or c == "_"):
                 return False
         return True
 
     @staticmethod
-    def _validate_password(password: str):
+    def _validate_password(password: str) -> bool:
         for c in password:
             if not (c.isalnum() or c in string.punctuation):
                 return False
         return True
 
-    def login_success(self, username):
+    def login_success(self, username: str):
         self.state = States.MAIN
         self.username = username
         self.server.active_users.append(username)
 
-    def logout(self):
+    def logout(self) -> Message:
         self.state = States.NOT_AUTHORIZED
         self.server.active_users.remove(self.username)
+        self.username = ""
         return Message(ResponseCodes.LOGOUT_SUCCESS)
 
-    def delete_user(self):
-        self.logout()
+    def delete_user(self) -> Message:
         db.query(User).filter(User.username == self.username).delete()
         db.commit()
         return Message(ResponseCodes.DELETE_USER_SUCCESS)

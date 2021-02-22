@@ -1,3 +1,4 @@
+from typing import Any
 from client import Message
 import json
 
@@ -5,7 +6,7 @@ CODE_LEN = 3
 LENGTH_LEN = 5
 
 
-def parse_message(msg):
+def parse_message(msg: str) -> Any:
     if len(msg) < CODE_LEN + LENGTH_LEN:
         raise ValueError("Bad message format")
     try:
