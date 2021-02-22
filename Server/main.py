@@ -1,8 +1,9 @@
 import server as s
-PORT = 1234
+from consts import Consts
+
 
 def main():
-    server = s.Server(PORT)
+    server = s.Server(Consts.SERVER_PORT)
     server.run()
 
 

@@ -1,4 +1,5 @@
-from consts import ResponseCodes
+from game import GameRoom
+from consts import ResponseCodes, Consts
 import socket
 from _thread import start_new_thread
 from locks import server_print
@@ -10,14 +11,12 @@ from _utils import parse_message
 PRINT_ACTIVE_USERS = "active"
 STOP_COMMANDS = "stop", "quit", "exit"
 
-CODE_LEN = 3
-LENGTH_LEN = 5
-
 
 class Server:
     def __init__(self, port):
         self.port = port
         self.active_users = []
+        self.game_rooms = []
 
     def run(self):
         start_new_thread(self.listen, ())
@@ -73,8 +72,8 @@ class Server:
     def send(sock: socket.socket, res: Message):
         json_data = json.dumps(res.data)
         msg = (
-            str(res.code).rjust(CODE_LEN, "0")
-            + str(len(json_data)).rjust(LENGTH_LEN, "0")
+            str(res.code).rjust(Consts.CODE_LEN, "0")
+            + str(len(json_data)).rjust(Consts.LENGTH_LEN, "0")
             + json_data
         )
 
@@ -87,3 +86,11 @@ class Server:
                 sys.exit(1)
             elif s == PRINT_ACTIVE_USERS:
                 print("Active users:", self.active_users)
+
+    def create_game(self, admin_username: str, max_players: int) -> GameRoom:
+        game_room = GameRoom(admin_username, max_players)
+        self.game_rooms.append(game_room)
+        return game_room
+
+    def remove_game(self, game_room):
+        self.game_rooms.remove(game_room)

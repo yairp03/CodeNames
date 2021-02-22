@@ -1,3 +1,13 @@
+class Consts:
+    SERVER_PORT = 1234
+
+    CODE_LEN = 3
+    LENGTH_LEN = 5
+
+    MAX_ROOM_PLAYERS = 8
+    GAME_MIN_PLAYERS = 4
+
+
 class RequestCodes:
     # Authentication
     LOGIN = 110
@@ -6,9 +16,11 @@ class RequestCodes:
     DELETE_USER = 140
 
     # Rooms
-    LIST_ROOMS = 210
+    CREATE_ROOM = 210
     JOIN_ROOM = 220
-    CREATE_ROOM = 230
+    LIST_ROOMS = 230
+    START_GAME = 240
+    LEAVE_ROOM = 250
 
     # Statistics
     GET_STATISTICS = 310
@@ -31,11 +43,14 @@ class ResponseCodes:
     DELETE_USER_SUCCESS = 141
 
     # Rooms
-    ROOMS_LIST = 211
+    CREATE_ROOM_SUCCESS = 211
     JOIN_ROOM_SUCCESS = 221
     JOIN_ROOM_FAILED = 222
-    CREATE_ROOM_SUCCESS = 231
-    CREATE_ROOM_FAILED = 232
+    ROOMS_LIST = 231
+    GAME_START_SUCCESS = 241
+    NOT_ROOM_ADMIN = 242
+    NOT_ENOUGH_PLAYERS = 243
+    LEAVE_ROOM_SUCCESS = 251
 
     # Statistics
     STATISTICS_DATA = 311
@@ -56,9 +71,11 @@ _string_codes = {
     RequestCodes.SIGNUP: "Signup",
     RequestCodes.LOGOUT: "Logout",
     RequestCodes.DELETE_USER: "Delete User",
-    RequestCodes.LIST_ROOMS: "List Rooms",
-    RequestCodes.JOIN_ROOM: "Join Room",
     RequestCodes.CREATE_ROOM: "Create Room",
+    RequestCodes.JOIN_ROOM: "Join Room",
+    RequestCodes.LIST_ROOMS: "List Rooms",
+    RequestCodes.START_GAME: "Start game",
+    RequestCodes.LEAVE_ROOM: "Leave room",
     RequestCodes.GET_STATISTICS: "Get Statistics",
     # Responses
     ResponseCodes.LOGIN_SUCCESS: "Login Success",
@@ -71,11 +88,14 @@ _string_codes = {
     ResponseCodes.SIGNUP_INVALID_PASSWORD: "Signup invalid password",
     ResponseCodes.LOGOUT_SUCCESS: "Logout Success",
     ResponseCodes.DELETE_USER_SUCCESS: "Delete User Success",
-    ResponseCodes.ROOMS_LIST: "Rooms List",
+    ResponseCodes.CREATE_ROOM_SUCCESS: "Create Room Success",
     ResponseCodes.JOIN_ROOM_SUCCESS: "Join Room Success",
     ResponseCodes.JOIN_ROOM_FAILED: "Join Room Failed",
-    ResponseCodes.CREATE_ROOM_SUCCESS: "Create Room Success",
-    ResponseCodes.CREATE_ROOM_FAILED: "Create Room Failed",
+    ResponseCodes.ROOMS_LIST: "Rooms List",
+    ResponseCodes.GAME_START_SUCCESS: "Game start success",
+    ResponseCodes.NOT_ROOM_ADMIN: "Not room admin",
+    ResponseCodes.NOT_ENOUGH_PLAYERS: "Not enough players",
+    ResponseCodes.LEAVE_ROOM_SUCCESS: "Leave room success",
     ResponseCodes.STATISTICS_DATA: "Statistics Data",
     ResponseCodes.BAD_MESSAGE: "Bad Message",
 }

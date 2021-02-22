@@ -1,23 +1,22 @@
 from typing import Any
 from client import Message
 import json
-
-CODE_LEN = 3
-LENGTH_LEN = 5
+from consts import Consts
+import string
 
 
 def parse_message(msg: str) -> Any:
-    if len(msg) < CODE_LEN + LENGTH_LEN:
+    if len(msg) < Consts.CODE_LEN + Consts.LENGTH_LEN:
         raise ValueError("Bad message format")
     try:
-        code = int(msg[:CODE_LEN])
+        code = int(msg[: Consts.CODE_LEN])
     except ValueError:
         raise ValueError("Message code should be an integer")
     try:
-        data_len = int(msg[CODE_LEN : CODE_LEN + LENGTH_LEN])
+        data_len = int(msg[Consts.CODE_LEN : Consts.CODE_LEN + Consts.LENGTH_LEN])
     except ValueError:
         raise ValueError("Data length should be an integer")
-    data = msg[CODE_LEN + LENGTH_LEN :]
+    data = msg[Consts.CODE_LEN + Consts.LENGTH_LEN :]
     if len(data) != data_len:
         raise ValueError("Wrong message length")
     try:
@@ -25,3 +24,24 @@ def parse_message(msg: str) -> Any:
     except ValueError:
         raise ValueError("Data should be in json format")
     return Message(code, data)
+
+
+def validate_username(username: str) -> bool:
+    for c in username:
+        if not (c.isalnum() or c == "_"):
+            return False
+    return True
+
+
+def validate_password(password: str) -> bool:
+    for c in password:
+        if not (c.isalnum() or c in string.punctuation):
+            return False
+    return True
+
+
+def extract_data(data: dict, *keys) -> list:
+    try:
+        return [data[key] for key in keys]
+    except (TypeError, KeyError):
+        return []
