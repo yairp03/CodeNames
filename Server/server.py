@@ -1,7 +1,6 @@
 from consts import ResponseCodes
 import socket
-import threading
-from _thread import *
+from _thread import start_new_thread
 from locks import server_print
 import sys
 import json
@@ -47,6 +46,8 @@ class Server:
             else:
                 res = client.handle_request(msg)
             Server.send(sock, res)
+        if client.username:
+            self.active_users.remove(client.username)
         server_print("Disconnected", client.sock.getpeername())
         sock.close()
 
