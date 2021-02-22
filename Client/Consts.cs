@@ -39,6 +39,7 @@ namespace Client
         public const int LOGIN_SUCCESS = 111;
         public const int LOGIN_USERNAME_DOESNT_EXISTS = 112;
         public const int LOGIN_WRONG_PASSWORD = 113;
+        public const int LOGIN_USER_ACTIVE = 114;
         // Signup
         public const int SIGNUP_SUCCESS = 121;
         public const int SIGNUP_USERNAME_EXISTS = 122;

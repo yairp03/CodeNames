@@ -79,6 +79,15 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to משתמש זה כבר מחובר.
+        /// </summary>
+        internal static string LOGIN_USER_ACTIVE {
+            get {
+                return ResourceManager.GetString("LOGIN_USER_ACTIVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to שם משתמש זה כבר קיים.
         /// </summary>
         internal static string USERNAME_ALREADY_EXISTS {

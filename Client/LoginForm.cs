@@ -78,6 +78,9 @@ namespace Client
                 case ResponseCodes.LOGIN_WRONG_PASSWORD:
                     LoginErrorMessage_Label.Text = Properties.Resources.WRONG_PASSWORD;
                     break;
+                case ResponseCodes.LOGIN_USER_ACTIVE:
+                    LoginErrorMessage_Label.Text = Properties.Resources.LOGIN_USER_ACTIVE;
+                    break;
                 default:
                     break;
             }

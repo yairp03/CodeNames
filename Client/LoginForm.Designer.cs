@@ -301,6 +301,8 @@ namespace Client
             this.Controls.Add(this.LoginUsername_Label);
             this.Controls.Add(this.LoginPassword_TextBox);
             this.Controls.Add(this.LoginUsername_TextBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.Text = "התחברות";
             this.CredentialsVerify_Panel.ResumeLayout(false);

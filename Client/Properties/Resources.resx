@@ -123,6 +123,9 @@
   <data name="INVALID_USERNAME" xml:space="preserve">
     <value>שם משתמש לא חוקי</value>
   </data>
+  <data name="LOGIN_USER_ACTIVE" xml:space="preserve">
+    <value>משתמש זה כבר מחובר</value>
+  </data>
   <data name="USERNAME_ALREADY_EXISTS" xml:space="preserve">
     <value>שם משתמש זה כבר קיים</value>
   </data>
