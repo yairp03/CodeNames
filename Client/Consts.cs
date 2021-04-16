@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Client
 {
@@ -66,7 +67,7 @@ namespace Client
         public const int JOIN_ROOM_FAILED = 222;
         public const int ROOMS_LIST = 231;
         public const int GAME_START_SUCCESS = 241;
-        public const int NOT_ROOM_ADMIN = 242;
+        public const int NOT_ROOM_HOST = 242;
         public const int NOT_ENOUGH_PLAYERS = 243;
         public const int LEAVE_ROOM_SUCCESS = 251;
         public const int LOBBY_UPDATE = 261;
@@ -82,5 +83,17 @@ namespace Client
         public const int STATISTICS_DATA = 411;
 
         public const int BAD_MESSAGE = 999;
+    }
+
+    class CardColor
+    {
+        public Color BLANK = Color.OldLace;
+        public Color REVEALED_BLANK = Color.NavajoWhite;
+        public Color RED = Color.MistyRose;
+        public Color REVEALED_RED = Color.Tomato;
+        public Color BLUE = Color.Lavender;
+        public Color REVEALED_BLUE = Color.RoyalBlue;
+        public Color BOMB = Color.LightGray;
+        public Color REVEALED_BOMB = Color.DimGray;
     }
 }

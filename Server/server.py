@@ -103,8 +103,8 @@ help - print this message"""
                     sep="\n",
                 )
 
-    def create_game(self, admin_username: str, max_players: int) -> GameRoom:
-        game_room = GameRoom(admin_username, max_players)
+    def create_game(self, host_username: str, max_players: int) -> GameRoom:
+        game_room = GameRoom(host_username, max_players)
         self.game_rooms.append(game_room)
         return game_room
 

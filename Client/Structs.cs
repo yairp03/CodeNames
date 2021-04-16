@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    using SignupMessage = LoginMessage;
-
     struct Message
     {
         public int code;
@@ -66,7 +64,7 @@ namespace Client
 
     struct GameRoom
     {
-        public string admin;
+        public string host;
         public int curr_players;
         public int max_players;
     }
@@ -83,11 +81,17 @@ namespace Client
 
     struct JoinRoomRequest
     {
-        public string admin;
+        public string host;
 
-        public JoinRoomRequest(string admin)
+        public JoinRoomRequest(string host)
         {
-            this.admin = admin;
+            this.host = host;
         }
+    }
+
+    public struct StartGameResponse
+    {
+        public List<string> reds;
+        public List<string> blues;
     }
 }

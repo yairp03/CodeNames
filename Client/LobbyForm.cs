@@ -15,23 +15,24 @@ namespace Client
     public partial class LobbyForm : Form
     {
         User user;
-        string admin;
         int currPlayers;
-        int maxPlayers;
-        public bool deleted;
+        readonly int maxPlayers;
+        public bool enterGame;
+        public StartGameResponse teams;
 
         public LobbyForm(User user, string admin, int maxPlayers)
         {
             InitializeComponent();
 
             this.user = user;
-            this.admin = admin;
             this.maxPlayers = maxPlayers;
-            OnlyAdmin_Label.Enabled = !(user.username == admin);
+            OnlyHost_Label.Enabled = !(user.username == admin);
+            enterGame = false;
         }
 
         private void PlayersListReload_Timer_Tick(object sender, EventArgs e)
         {
+            PlayersListReload_Timer.Enabled = false;
             ReloadPlayersList();
         }
 
@@ -43,11 +44,18 @@ namespace Client
                 switch (res.code)
                 {
                     case ResponseCodes.LOBBY_DELETED:
-                        deleted = true;
-                        Close();
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Close();
+                        });
                         break;
                     case ResponseCodes.LOBBY_STARTED:
-                        // Game
+                        enterGame = true;
+                        teams = JsonConvert.DeserializeObject<StartGameResponse>(res.data);
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Close();
+                        });
                         break;
                     case ResponseCodes.LOBBY_UPDATE:
                         List<string> players = JsonConvert.DeserializeObject<List<string>>(res.data);
@@ -56,6 +64,7 @@ namespace Client
                             Invoke((MethodInvoker)delegate
                             {
                                 UpdatePlayersPanel(players);
+                                PlayersListReload_Timer.Enabled = true;
                             });
                         }
                         catch { }
@@ -68,18 +77,11 @@ namespace Client
 
         private void UpdatePlayersPanel(List<string> players)
         {
-            Players_Panel.Controls.Clear();
             currPlayers = players.Count;
             PlayersAmount_Label.Text = currPlayers.ToString() + "/" + maxPlayers.ToString();
-            int y = 20;
-            foreach (string player in players)
-            {
-                Label Player_Label = new Label() { Text = player, Location = new Point(20, y) };
-                Players_Panel.Controls.Add(Player_Label);
-                y += 20;
-            }
+            Utils.AddTextsToPanel(Players_Panel, players);
             NotEnoughPlayers_Label.Enabled = !CanStart();
-            StartGame_Button.Enabled = !NotEnoughPlayers_Label.Enabled && !OnlyAdmin_Label.Enabled;
+            StartGame_Button.Enabled = !NotEnoughPlayers_Label.Enabled && !OnlyHost_Label.Enabled;
         }
 
         private bool CanStart()
@@ -96,6 +98,11 @@ namespace Client
         {
             PlayersListReload_Timer.Enabled = false;
             StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+        }
+
+        private void StartGame_Button_Click(object sender, EventArgs e)
+        {
+            StreamHelper.Communicate(user.clientStream, RequestCodes.START_GAME);
         }
     }
 }

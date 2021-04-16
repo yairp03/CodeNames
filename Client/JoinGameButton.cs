@@ -11,13 +11,13 @@ namespace Client
 {
     public partial class JoinGameButton : Button
     {
-        public string gameAdmin;
+        public string gameHost;
         public int maxPlayers;
 
-        public JoinGameButton(string gameAdmin, int maxPlayers)
+        public JoinGameButton(string gameHost, int maxPlayers)
         {
             InitializeComponent();
-            this.gameAdmin = gameAdmin;
+            this.gameHost = gameHost;
             this.maxPlayers = maxPlayers;
         }
 

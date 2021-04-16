@@ -17,6 +17,7 @@ class Consts:
     CARDS_AMOUNT = BOARD_LENGTH * BOARD_WIDTH
     BASE_TEAM_AMOUNT = 7
     BOMBS_AMOUNT = 1
+    BLANK_AMOUNT = CARDS_AMOUNT - BASE_TEAM_AMOUNT * 2 - 1 - BOMBS_AMOUNT
 
 
 class RequestCodes:
@@ -66,7 +67,7 @@ class ResponseCodes:
     JOIN_ROOM_FAILED = 222
     ROOMS_LIST = 231
     GAME_START_SUCCESS = 241
-    NOT_ROOM_ADMIN = 242
+    NOT_ROOM_HOST = 242
     NOT_ENOUGH_PLAYERS = 243
     LEAVE_ROOM_SUCCESS = 251
     LOBBY_UPDATE = 261
@@ -76,7 +77,14 @@ class ResponseCodes:
     # Game
     GAME_STATE = 311
     REVEAL_SUCCESS = 321
-    REVEAL_FAILED = 322
+    REVEAL_NOT_YOUR_TURN = 322
+    WAIT_FOR_WORD = 323
+    CARD_ALREADY_REVEALED = 324
+    SEND_WORD_SUCCESS = 331
+    WORD_NOT_YOUR_TURN = 332
+    WORD_ALREADY_SENT = 333
+    INVALID_WORD = 334
+    INVALID_CARDS_AMOUNT = 335
 
     # Statistics
     STATISTICS_DATA = 411
@@ -121,7 +129,7 @@ _string_codes = {
     ResponseCodes.JOIN_ROOM_FAILED: "Join Room Failed",
     ResponseCodes.ROOMS_LIST: "Rooms List",
     ResponseCodes.GAME_START_SUCCESS: "Game start success",
-    ResponseCodes.NOT_ROOM_ADMIN: "Not room admin",
+    ResponseCodes.NOT_ROOM_HOST: "Not room admin",
     ResponseCodes.NOT_ENOUGH_PLAYERS: "Not enough players",
     ResponseCodes.LEAVE_ROOM_SUCCESS: "Leave room success",
     ResponseCodes.STATISTICS_DATA: "Statistics Data",

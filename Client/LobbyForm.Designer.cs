@@ -35,7 +35,7 @@ namespace Client
             this.label1 = new System.Windows.Forms.Label();
             this.PlayersAmount_Label = new System.Windows.Forms.Label();
             this.StartGame_Button = new System.Windows.Forms.Button();
-            this.OnlyAdmin_Label = new System.Windows.Forms.Label();
+            this.OnlyHost_Label = new System.Windows.Forms.Label();
             this.PlayersListReload_Timer = new System.Windows.Forms.Timer(this.components);
             this.NotEnoughPlayers_Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -92,16 +92,17 @@ namespace Client
             this.StartGame_Button.TabIndex = 5;
             this.StartGame_Button.Text = "התחל משחק";
             this.StartGame_Button.UseVisualStyleBackColor = true;
+            this.StartGame_Button.Click += new System.EventHandler(this.StartGame_Button_Click);
             // 
-            // OnlyAdmin_Label
+            // OnlyHost_Label
             // 
-            this.OnlyAdmin_Label.AutoSize = true;
-            this.OnlyAdmin_Label.ForeColor = System.Drawing.Color.Red;
-            this.OnlyAdmin_Label.Location = new System.Drawing.Point(458, 345);
-            this.OnlyAdmin_Label.Name = "OnlyAdmin_Label";
-            this.OnlyAdmin_Label.Size = new System.Drawing.Size(207, 13);
-            this.OnlyAdmin_Label.TabIndex = 6;
-            this.OnlyAdmin_Label.Text = "רק מנהל החדר יכול להתחיל את המשחק";
+            this.OnlyHost_Label.AutoSize = true;
+            this.OnlyHost_Label.ForeColor = System.Drawing.Color.Red;
+            this.OnlyHost_Label.Location = new System.Drawing.Point(458, 345);
+            this.OnlyHost_Label.Name = "OnlyHost_Label";
+            this.OnlyHost_Label.Size = new System.Drawing.Size(207, 13);
+            this.OnlyHost_Label.TabIndex = 6;
+            this.OnlyHost_Label.Text = "רק מנהל החדר יכול להתחיל את המשחק";
             // 
             // PlayersListReload_Timer
             // 
@@ -125,7 +126,7 @@ namespace Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.NotEnoughPlayers_Label);
-            this.Controls.Add(this.OnlyAdmin_Label);
+            this.Controls.Add(this.OnlyHost_Label);
             this.Controls.Add(this.StartGame_Button);
             this.Controls.Add(this.PlayersAmount_Label);
             this.Controls.Add(this.label1);
@@ -148,7 +149,7 @@ namespace Client
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label PlayersAmount_Label;
         private System.Windows.Forms.Button StartGame_Button;
-        private System.Windows.Forms.Label OnlyAdmin_Label;
+        private System.Windows.Forms.Label OnlyHost_Label;
         private System.Windows.Forms.Timer PlayersListReload_Timer;
         private System.Windows.Forms.Label NotEnoughPlayers_Label;
     }

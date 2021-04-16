@@ -24,8 +24,14 @@ class WordCard:
 
 class Board:
     def __init__(self, word_board: List[List[str]]):
-        self.board = [[WordCard(w) for w in r] for r in word_board]
-        self.more = CardType.RED if random() > 0.5 else CardType.BLUE
+        self.board = [
+            [
+                WordCard(word_board[r * Consts.BOARD_LENGTH + c])
+                for c in range(Consts.BOARD_LENGTH)
+            ]
+            for r in range(Consts.BOARD_LENGTH)
+        ]
+        self.more = CardType.RED if random() >= 0.5 else CardType.BLUE
         self.random_types()
 
     def random_types(self):
@@ -55,3 +61,6 @@ class Board:
             [wc if wc.revealed else WordCard(wc.word, CardType.NONE) for wc in r]
             for r in self.board
         ]
+
+    def __getitem__(self, row: int) -> List[WordCard]:
+        return self.board[row]

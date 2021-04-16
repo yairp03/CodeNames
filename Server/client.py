@@ -2,7 +2,7 @@ from __future__ import annotations
 from message import Message
 from consts import *
 from database import Database
-from _utils import validate_username, validate_password, extract_data
+from _utils import validate_username, validate_password, extract_data, validate_word
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -26,7 +26,7 @@ class Client:
         if self.state == States.NOT_AUTHORIZED:
             if req.code == RequestCodes.LOGIN:
                 return self.login(req.data)
-            elif req.code == RequestCodes.SIGNUP:
+            if req.code == RequestCodes.SIGNUP:
                 return self.signup(req.data)
         else:
             if req.code == RequestCodes.LOGOUT:
@@ -35,11 +35,11 @@ class Client:
             elif self.state == States.MAIN:
                 if req.code == RequestCodes.CREATE_ROOM:
                     return self.create_room(req.data)
-                elif req.code == RequestCodes.JOIN_ROOM:
+                if req.code == RequestCodes.JOIN_ROOM:
                     return self.join_room(req.data)
-                elif req.code == RequestCodes.LIST_ROOMS:
+                if req.code == RequestCodes.LIST_ROOMS:
                     return self.list_rooms()
-                elif req.code == RequestCodes.DELETE_USER:
+                if req.code == RequestCodes.DELETE_USER:
                     res = self.delete_user()
                     self.logout()
                     return res
@@ -47,18 +47,20 @@ class Client:
             elif self.state == States.LOBBY:
                 if req.code == RequestCodes.START_GAME:
                     return self.start_game()
-                elif req.code == RequestCodes.LEAVE_ROOM:
+                if req.code == RequestCodes.LEAVE_ROOM:
                     return self.leave_room()
-                elif req.code == RequestCodes.LOBBY_UPDATES:
+                if req.code == RequestCodes.LOBBY_UPDATES:
                     return self.lobby_updates()
 
             elif self.state == States.GAME:
                 if req.code == RequestCodes.GAME_STATE:
                     return self.game_state()
-                elif req.code == RequestCodes.REVEAL_CARD:
+                if req.code == RequestCodes.REVEAL_CARD:
                     return self.reveal_card()
-                elif req.code == RequestCodes.LEAVE_ROOM:
+                if req.code == RequestCodes.LEAVE_ROOM:
                     return self.leave_room()
+                if req.code == RequestCodes.SEND_WORD:
+                    return self.send_word()
 
         return BAD_MESSAGE_CODE
 
@@ -72,10 +74,8 @@ class Client:
                     return Message(ResponseCodes.LOGIN_USER_ACTIVE)
                 self.login_success(username)
                 return Message(ResponseCodes.LOGIN_SUCCESS)
-            else:
-                return Message(ResponseCodes.LOGIN_WRONG_PASSWORD)
-        else:
-            return Message(ResponseCodes.LOGIN_USERNAME_DOESNT_EXISTS)
+            return Message(ResponseCodes.LOGIN_WRONG_PASSWORD)
+        return Message(ResponseCodes.LOGIN_USERNAME_DOESNT_EXISTS)
 
     def signup(self, data: dict) -> Message:
         if not (data_list := extract_data(data, "username", "password")):
@@ -83,14 +83,13 @@ class Client:
         username, password = data_list
         if Database.user_exists(username):
             return Message(ResponseCodes.SIGNUP_USERNAME_EXISTS)
-        elif not validate_username(username):
+        if not validate_username(username):
             return Message(ResponseCodes.SIGNUP_INVALID_USERNAME)
-        elif not validate_password(password):
+        if not validate_password(password):
             return Message(ResponseCodes.SIGNUP_INVALID_PASSWORD)
-        else:
-            Database.create_user(username, password)
-            self.login_success(username)
-            return Message(ResponseCodes.SIGNUP_SUCCESS)
+        Database.create_user(username, password)
+        self.login_success(username)
+        return Message(ResponseCodes.SIGNUP_SUCCESS)
 
     def login_success(self, username: str):
         self.state = States.MAIN
@@ -125,23 +124,22 @@ class Client:
         return Message(ResponseCodes.CREATE_ROOM_SUCCESS)
 
     def join_room(self, data: dict) -> Message:
-        if not (data_list := extract_data(data, "admin")):
+        if not (data_list := extract_data(data, "host")):
             return BAD_MESSAGE_DATA
-        admin = data_list[0]
+        host = data_list[0]
         if (
-            room := next((r for r in self.server.game_rooms if r.admin == admin), None)
+            room := next((r for r in self.server.game_rooms if r.host == host), None)
         ) and room.is_joinable():
             room.add_user(self.username)
             self.game_room = room
             self.state = States.LOBBY
             return Message(ResponseCodes.JOIN_ROOM_SUCCESS)
-        else:
-            return Message(ResponseCodes.JOIN_ROOM_FAILED)
+        return Message(ResponseCodes.JOIN_ROOM_FAILED)
 
     def list_rooms(self) -> Message:
         rooms = [
             {
-                "admin": room.admin,
+                "host": room.host,
                 "curr_players": len(room.players),
                 "max_players": room.max_players,
             }
@@ -151,18 +149,25 @@ class Client:
         return Message(ResponseCodes.ROOMS_LIST, rooms)
 
     def start_game(self) -> Message:
-        if self.username != self.game_room.admin:
-            return Message(ResponseCodes.NOT_ROOM_ADMIN)
-        elif not self.game_room.can_start():
-            return Message(ResponseCodes.NOT_ENOUGH_PLAYERS)
-
-        self.state = States.GAME
-        self.game_room.start()
+        if not self.game_room.started:
+            if self.username != self.game_room.host:
+                return Message(ResponseCodes.NOT_ROOM_HOST)
+            if not self.game_room.can_start():
+                return Message(ResponseCodes.NOT_ENOUGH_PLAYERS)
+            self.game_room.start()
 
         return Message(ResponseCodes.GAME_START_SUCCESS)
 
+    def enter_game(self) -> Message:
+        self.state = States.GAME
+        self.team = self.game_room.which_team(self.username)
+        self.manager = self.game_room.is_manager(self.username, self.team)
+        return Message(ResponseCodes.LOBBY_STARTED, self.game_room.get_teams())
+
     def leave_room(self) -> Message:
-        if self.game_room.admin == self.username or self.game_room.started:
+        if self.game_room.host == self.username or (
+            self.game_room.started and not self.game_room.deleted
+        ):
             self.game_room.deleted = True
             self.server.remove_game(self.game_room)
         self.game_room.players.remove(self.username)
@@ -176,19 +181,40 @@ class Client:
         if self.game_room.deleted:
             self.leave_room()
             return Message(ResponseCodes.LOBBY_DELETED)
-        elif self.game_room.started:
-            self.state = States.GAME
-            return Message(ResponseCodes.LOBBY_STARTED)
-        else:
-            return Message(
-                ResponseCodes.LOBBY_UPDATE, self.game_room.get_players_list()
-            )
+        if self.game_room.started:
+            return self.enter_game()
+        return Message(ResponseCodes.LOBBY_UPDATE, self.game_room.get_players_list())
 
     def game_state(self) -> Message:
         return Message(
             ResponseCodes.GAME_STATE,
-            self.game_room.get_state(self.game_room.admin == self.username),
+            self.game_room.get_state(self.game_room.host == self.username),
         )
 
-    def reveal_card(self) -> Message:
+    def reveal_card(self, data: dict) -> Message:
+        if self.team != self.game_room.turn:
+            return Message(ResponseCodes.REVEAL_NOT_YOUR_TURN)
+        if not self.game_room.curr_word:
+            return Message(ResponseCodes.WAIT_FOR_WORD)
+        if not (data_list := extract_data(data, "row", "column")):
+            return BAD_MESSAGE_DATA
+        row, column = data_list
+        if self.game_room.is_revealed(row, column):
+            return Message(ResponseCodes.CARD_ALREADY_REVEALED)
+        self.game_room.reveal_card()
+
         return Message(ResponseCodes.REVEAL_SUCCESS)
+
+    def send_word(self, data: dict) -> Message:
+        if self.team != self.game_room.turn:
+            return Message(ResponseCodes.WORD_NOT_YOUR_TURN)
+        if self.game_room.curr_word:
+            return Message(ResponseCodes.WORD_ALREADY_SENT)
+        if not (data_list := extract_data(data, "word", "amount")):
+            return BAD_MESSAGE_DATA
+        word, amount = data_list
+        if not validate_word(word):
+            return Message(ResponseCodes.INVALID_WORD)
+        if not (1 <= amount <= self.game_room.remains[self.team]):
+            return Message(ResponseCodes.INVALID_CARDS_AMOUNT)
+        self.game_room.update_word(word, amount)

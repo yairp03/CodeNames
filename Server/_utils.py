@@ -45,3 +45,7 @@ def extract_data(data: dict, *keys) -> list:
         return [data[key] for key in keys]
     except (TypeError, KeyError):
         return []
+
+
+def validate_word(word: str) -> bool:
+    return 2 <= len(word) <= 15

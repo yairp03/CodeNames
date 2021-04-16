@@ -91,7 +91,7 @@ namespace Client
             0,
             0});
             this.MaxPlayers_NumericUpDown.Minimum = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
             0});
@@ -99,7 +99,7 @@ namespace Client
             this.MaxPlayers_NumericUpDown.Size = new System.Drawing.Size(74, 20);
             this.MaxPlayers_NumericUpDown.TabIndex = 2;
             this.MaxPlayers_NumericUpDown.Value = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
             0});
@@ -169,9 +169,9 @@ namespace Client
             this.label6.Location = new System.Drawing.Point(68, 128);
             this.label6.Name = "label6";
             this.label6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label6.Size = new System.Drawing.Size(66, 22);
+            this.label6.Size = new System.Drawing.Size(49, 22);
             this.label6.TabIndex = 8;
-            this.label6.Text = "admin";
+            this.label6.Text = "host";
             // 
             // label7
             // 
@@ -196,7 +196,7 @@ namespace Client
             this.ReloadLobbies_Button.TabIndex = 11;
             this.ReloadLobbies_Button.Text = "Reload";
             this.ReloadLobbies_Button.UseVisualStyleBackColor = true;
-            this.ReloadLobbies_Button.Click += new System.EventHandler(this.ReloadLobbies_Button_Click_1);
+            this.ReloadLobbies_Button.Click += new System.EventHandler(this.ReloadLobbies_Button_Click);
             // 
             // MainForm
             // 
