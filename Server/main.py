@@ -1,9 +1,9 @@
-import server as s
+from server import Server
 from consts import Consts
 
 
 def main():
-    server = s.Server(Consts.SERVER_PORT)
+    server = Server(Consts.SERVER_PORT)
     server.run()
 
 

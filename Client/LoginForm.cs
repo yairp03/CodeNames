@@ -93,7 +93,7 @@ namespace Client
             User user = new User(clientStream, username);
             MainForm mainForm = new MainForm(user);
             mainForm.ShowDialog();
-            Show();
+            Close();
         }
 
         private void SwitchSigninMethod()
@@ -206,7 +206,7 @@ namespace Client
                 PasswordLegalChars_Label.ForeColor = Color.Green;
             }
 
-            if (password.Length >= 8 && password.Length <= 16)
+            if (password.Length >= 5 && password.Length <= 16)
             {
                 PasswordLegalLength_Label.ForeColor = Color.Green;
             }

@@ -28,7 +28,7 @@ namespace Client
             return int.Parse(data);
         }
 
-        public static Message GetMessage(NetworkStream socket)
+        private static Message GetMessage(NetworkStream socket)
         {
             int code = GetIntFromSocket(socket, Consts.CODE_PART_LENGTH);
             int dataLength = GetIntFromSocket(socket, Consts.LENGTH_PART_LENGTH);
@@ -36,7 +36,7 @@ namespace Client
             return new Message(code, data);
         }
 
-        public static T GetMessage<T>(NetworkStream socket)
+        private static T GetMessage<T>(NetworkStream socket)
         {
             Message msg = GetMessage(socket);
             T data = JsonConvert.DeserializeObject<T>(msg.data);
@@ -50,7 +50,7 @@ namespace Client
             socket.Flush();
         }
 
-        public static void SendMessage<T>(NetworkStream socket, int code, T data)
+        private static void SendMessage<T>(NetworkStream socket, int code, T data)
         {
             string jsonString = JsonConvert.SerializeObject(data);
             Message msg = new Message(code, jsonString);

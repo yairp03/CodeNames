@@ -63,4 +63,31 @@ namespace Client
             this.username = username;
         }
     }
+
+    struct GameRoom
+    {
+        public string admin;
+        public int curr_players;
+        public int max_players;
+    }
+
+    struct CreateRoomRequest
+    {
+        public int max_players;
+
+        public CreateRoomRequest(int maxPlayers)
+        {
+            max_players = maxPlayers;
+        }
+    }
+
+    struct JoinRoomRequest
+    {
+        public string admin;
+
+        public JoinRoomRequest(string admin)
+        {
+            this.admin = admin;
+        }
+    }
 }

@@ -247,7 +247,7 @@ namespace Client
             this.PasswordLegalLength_Label.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.PasswordLegalLength_Label.Size = new System.Drawing.Size(86, 18);
             this.PasswordLegalLength_Label.TabIndex = 18;
-            this.PasswordLegalLength_Label.Text = "・ 8-16 תווים";
+            this.PasswordLegalLength_Label.Text = "・ 5-16 תווים";
             // 
             // PasswordVerifyLabel_Label
             // 

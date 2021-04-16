@@ -13,6 +13,8 @@ namespace Client
 
         public const int CODE_PART_LENGTH = 3;
         public const int LENGTH_PART_LENGTH = 5;
+
+        public const int GAME_MIN_PLAYERS = 4;
     }
 
     class RequestCodes
@@ -24,12 +26,20 @@ namespace Client
         public const int DELETE_USER = 140;
 
         // Rooms
-        public const int LIST_ROOMS = 210;
+        public const int CREATE_ROOM = 210;
         public const int JOIN_ROOM = 220;
-        public const int CREATE_ROOM = 230;
+        public const int LIST_ROOMS = 230;
+        public const int START_GAME = 240;
+        public const int LEAVE_ROOM = 250;
+        public const int LOBBY_UPDATES = 260;
+
+        // Game
+        public const int GAME_STATE = 310;
+        public const int REVEAL_CARD = 320;
+        public const int SEND_WORD = 330;
 
         // Statistics
-        public const int GET_STATISTICS = 310;
+        public const int GET_STATISTICS = 410;
     }
 
     class ResponseCodes
@@ -50,14 +60,26 @@ namespace Client
         public const int DELETE_USER_SUCCESS = 141;
 
         // Rooms
-        public const int ROOMS_LIST = 211;
+        public const int CREATE_ROOM_SUCCESS = 211;
+        public const int BAD_MAX_PLAYERS = 212;
         public const int JOIN_ROOM_SUCCESS = 221;
         public const int JOIN_ROOM_FAILED = 222;
-        public const int CREATE_ROOM_SUCCESS = 231;
-        public const int CREATE_ROOM_FAILED = 232;
+        public const int ROOMS_LIST = 231;
+        public const int GAME_START_SUCCESS = 241;
+        public const int NOT_ROOM_ADMIN = 242;
+        public const int NOT_ENOUGH_PLAYERS = 243;
+        public const int LEAVE_ROOM_SUCCESS = 251;
+        public const int LOBBY_UPDATE = 261;
+        public const int LOBBY_STARTED = 262;
+        public const int LOBBY_DELETED = 263;
+
+        // Game
+        public const int GAME_STATE = 311;
+        public const int REVEAL_SUCCESS = 321;
+        public const int REVEAL_FAILED = 322;
 
         // Statistics
-        public const int STATISTICS_DATA = 311;
+        public const int STATISTICS_DATA = 411;
 
         public const int BAD_MESSAGE = 999;
     }

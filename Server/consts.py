@@ -1,3 +1,8 @@
+from enum import Enum, auto
+
+__all__ = ["Consts", "RequestCodes", "ResponseCodes", "States"]
+
+
 class Consts:
     SERVER_PORT = 1234
 
@@ -6,6 +11,12 @@ class Consts:
 
     MAX_ROOM_PLAYERS = 8
     GAME_MIN_PLAYERS = 4
+
+    BOARD_LENGTH = 5
+    BOARD_WIDTH = 5
+    CARDS_AMOUNT = BOARD_LENGTH * BOARD_WIDTH
+    BASE_TEAM_AMOUNT = 7
+    BOMBS_AMOUNT = 1
 
 
 class RequestCodes:
@@ -21,9 +32,15 @@ class RequestCodes:
     LIST_ROOMS = 230
     START_GAME = 240
     LEAVE_ROOM = 250
+    LOBBY_UPDATES = 260
+
+    # Game
+    GAME_STATE = 310
+    REVEAL_CARD = 320
+    SEND_WORD = 330
 
     # Statistics
-    GET_STATISTICS = 310
+    GET_STATISTICS = 410
 
 
 class ResponseCodes:
@@ -44,6 +61,7 @@ class ResponseCodes:
 
     # Rooms
     CREATE_ROOM_SUCCESS = 211
+    BAD_MAX_PLAYERS = 212
     JOIN_ROOM_SUCCESS = 221
     JOIN_ROOM_FAILED = 222
     ROOMS_LIST = 231
@@ -51,18 +69,26 @@ class ResponseCodes:
     NOT_ROOM_ADMIN = 242
     NOT_ENOUGH_PLAYERS = 243
     LEAVE_ROOM_SUCCESS = 251
+    LOBBY_UPDATE = 261
+    LOBBY_STARTED = 262
+    LOBBY_DELETED = 263
+
+    # Game
+    GAME_STATE = 311
+    REVEAL_SUCCESS = 321
+    REVEAL_FAILED = 322
 
     # Statistics
-    STATISTICS_DATA = 311
+    STATISTICS_DATA = 411
 
     BAD_MESSAGE = 999
 
 
-class States:
-    NOT_AUTHORIZED = 0
-    MAIN = 1
-    LOBBY = 2
-    GAME = 3
+class States(Enum):
+    NOT_AUTHORIZED = auto()
+    MAIN = auto()
+    LOBBY = auto()
+    GAME = auto()
 
 
 _string_codes = {
@@ -76,6 +102,7 @@ _string_codes = {
     RequestCodes.LIST_ROOMS: "List Rooms",
     RequestCodes.START_GAME: "Start game",
     RequestCodes.LEAVE_ROOM: "Leave room",
+    RequestCodes.LOBBY_UPDATES: "Lobby updates",
     RequestCodes.GET_STATISTICS: "Get Statistics",
     # Responses
     ResponseCodes.LOGIN_SUCCESS: "Login Success",
@@ -89,6 +116,7 @@ _string_codes = {
     ResponseCodes.LOGOUT_SUCCESS: "Logout Success",
     ResponseCodes.DELETE_USER_SUCCESS: "Delete User Success",
     ResponseCodes.CREATE_ROOM_SUCCESS: "Create Room Success",
+    ResponseCodes.BAD_MAX_PLAYERS: "Bad max players",
     ResponseCodes.JOIN_ROOM_SUCCESS: "Join Room Success",
     ResponseCodes.JOIN_ROOM_FAILED: "Join Room Failed",
     ResponseCodes.ROOMS_LIST: "Rooms List",
@@ -97,9 +125,12 @@ _string_codes = {
     ResponseCodes.NOT_ENOUGH_PLAYERS: "Not enough players",
     ResponseCodes.LEAVE_ROOM_SUCCESS: "Leave room success",
     ResponseCodes.STATISTICS_DATA: "Statistics Data",
+    ResponseCodes.LOBBY_UPDATE: "Lobby update",
+    ResponseCodes.LOBBY_STARTED: "Lobby started",
+    ResponseCodes.LOBBY_DELETED: "Lobby deleted",
     ResponseCodes.BAD_MESSAGE: "Bad Message",
 }
 
 
-def to_string(code: int) -> str:
-    return _string_codes[code]
+def code_to_string(code: int) -> str:
+    return _string_codes[code] if code in _string_codes else str(code)

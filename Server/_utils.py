@@ -1,11 +1,11 @@
-from typing import Any
-from client import Message
+from typing import Union
+from message import Message
 import json
 from consts import Consts
 import string
 
 
-def parse_message(msg: str) -> Any:
+def parse_message(msg: str) -> Message:
     if len(msg) < Consts.CODE_LEN + Consts.LENGTH_LEN:
         raise ValueError("Bad message format")
     try:
