@@ -1,11 +1,12 @@
-﻿using System.Drawing;
+﻿using System.Configuration;
+using System.Drawing;
 
 namespace CodeNames
 {
     class Consts
     {
-        public const string SERVER_IP = "127.0.0.1";
-        public const int SERVER_PORT = 1234;
+        public static string SERVER_IP = ConfigurationManager.AppSettings["IpAddress"];
+        public static int SERVER_PORT = int.Parse(ConfigurationManager.AppSettings["Port"]);
 
         public const int CODE_PART_LENGTH = 3;
         public const int LENGTH_PART_LENGTH = 5;
