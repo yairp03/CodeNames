@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,7 +35,23 @@ namespace Client
         {
             Task.Run(() =>
             {
-                Message res = StreamHelper.Communicate(user.clientStream, RequestCodes.LOBBY_UPDATES);
+                Message res = new Message();
+                try
+                {
+                    res = StreamHelper.Communicate(user.clientStream, RequestCodes.LOBBY_UPDATES);
+                }
+                catch (IOException)
+                {
+                    try
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Utils.ConnectionAbortMessageBox();
+                            Close();
+                        });
+                    }
+                    catch { }
+                }
                 switch (res.code)
                 {
                     case ResponseCodes.LOBBY_DELETED:
@@ -93,14 +110,30 @@ namespace Client
             PlayersListReload_Timer.Enabled = false;
             if (!enterGame)
             {
-                StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+                try
+                {
+                    StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+                }
+                catch (IOException)
+                {
+                    Utils.ConnectionAbortMessageBox();
+                    Close();
+                }
             }
         }
 
         private void StartGame_Button_Click(object sender, EventArgs e)
         {
             StartGame_Button.Enabled = false;
-            StreamHelper.Communicate(user.clientStream, RequestCodes.START_GAME);
+            try
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.START_GAME);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
         }
     }
 }

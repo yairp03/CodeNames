@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -68,7 +69,17 @@ namespace Client
         private void GameForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             GameUpdates_Timer.Enabled = false;
-            StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+
+            try
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
+
         }
 
         private void GameUpdates_Timer_Tick(object sender, EventArgs e)
@@ -80,7 +91,23 @@ namespace Client
         {
             Task.Run(() =>
             {
-                GameState gameState = StreamHelper.Communicate<GameState>(user.clientStream, RequestCodes.GAME_STATE);
+                GameState gameState = new GameState();
+                try
+                {
+                    gameState = StreamHelper.Communicate<GameState>(user.clientStream, RequestCodes.GAME_STATE);
+                }
+                catch (IOException)
+                {
+                    try
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Utils.ConnectionAbortMessageBox();
+                            Close();
+                        });
+                    }
+                    catch { }
+                }
                 if (gameState.winner != CardType.NONE)
                 {
                     GameUpdates_Timer.Enabled = false;
@@ -143,17 +170,26 @@ namespace Client
         private void SendWord_Button_Click(object sender, EventArgs e)
         {
             SendWordRequest request = new SendWordRequest(Utils.Base64Encode(CurrWord_TextBox.Text), Convert.ToInt32(CurrAmount_NumericUpDown.Value));
-            Message res = StreamHelper.Communicate(user.clientStream, RequestCodes.SEND_WORD, request);
+            Message res = new Message();
+            try
+            {
+                res = StreamHelper.Communicate(user.clientStream, RequestCodes.SEND_WORD, request);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
             switch (res.code)
             {
                 case ResponseCodes.SEND_WORD_SUCCESS:
                     SendWord_Button.Visible = false;
                     break;
                 case ResponseCodes.INVALID_WORD:
-                    Utils.RtlMessageBox("מילה לא חוקית!", "שגיאה", MessageBoxIcon.Error);
+                    Utils.ErrorMessageBox("מילה לא חוקית!");
                     break;
                 case ResponseCodes.INVALID_CARDS_AMOUNT:
-                    Utils.RtlMessageBox("כמות לא חוקית!", "שגיאה", MessageBoxIcon.Error);
+                    Utils.ErrorMessageBox("כמות לא חוקית!");
                     break;
                 default:
                     break;
@@ -168,7 +204,15 @@ namespace Client
             GuessWord_Panel.Visible = false;
             GuessWord_Button.Visible = false;
             chosedWord = null;
-            StreamHelper.Communicate(user.clientStream, RequestCodes.REVEAL_CARD, request);
+            try
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.REVEAL_CARD, request);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
         }
     }
 }

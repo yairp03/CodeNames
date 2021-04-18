@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,12 +24,28 @@ namespace Client
 
         private void Logout()
         {
-            StreamHelper.Communicate(user.clientStream, RequestCodes.LOGOUT);
+            try
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.LOGOUT);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
         }
 
         private void DeleteUser()
         {
-            StreamHelper.Communicate(user.clientStream, RequestCodes.DELETE_USER);
+            try
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.DELETE_USER);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
         }
 
         private void Logout_Button_Click(object sender, EventArgs e)
@@ -63,7 +80,23 @@ namespace Client
             Lobbies_Panel.Controls.Clear();
             Task.Run(() =>
             {
-                List<GameRoom> lobbies = StreamHelper.Communicate<List<GameRoom>>(user.clientStream, RequestCodes.LIST_ROOMS);
+                List<GameRoom> lobbies = new List<GameRoom>();
+                try
+                {
+                    lobbies = StreamHelper.Communicate<List<GameRoom>>(user.clientStream, RequestCodes.LIST_ROOMS);
+                }
+                catch (IOException)
+                {
+                    try
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Utils.ConnectionAbortMessageBox();
+                            Close();
+                        });
+                    }
+                    catch { }
+                }
                 int y = 20;
                 foreach (GameRoom room in lobbies)
                 {
@@ -109,13 +142,30 @@ namespace Client
         private void CreateLobby()
         {
             int maxPlayers = Convert.ToInt32(MaxPlayers_NumericUpDown.Value);
-            StreamHelper.Communicate(user.clientStream, RequestCodes.CREATE_ROOM, new CreateRoomRequest(maxPlayers));
+            try
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.CREATE_ROOM, new CreateRoomRequest(maxPlayers));
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
             OpenLobby(user.username, maxPlayers);
         }
 
         private void JoinLobby(string host, int maxPlayers)
         {
-            Message res = StreamHelper.Communicate(user.clientStream, RequestCodes.JOIN_ROOM, new JoinRoomRequest(host));
+            Message res = new Message();
+            try
+            {
+                res = StreamHelper.Communicate(user.clientStream, RequestCodes.JOIN_ROOM, new JoinRoomRequest(host));
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
             switch (res.code)
             {
                 case ResponseCodes.JOIN_ROOM_SUCCESS:

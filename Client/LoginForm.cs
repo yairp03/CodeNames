@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -23,9 +25,38 @@ namespace Client
         {
             TcpClient client = new TcpClient();
             IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(Consts.SERVER_IP), Consts.SERVER_PORT);
-            
-            client.Connect(serverEndPoint);
-            clientStream = client.GetStream();
+            Task.Run(() =>
+            {
+                try
+                {
+
+                    client.Connect(serverEndPoint);
+                    clientStream = client.GetStream();
+                    try
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            LoginSignup_Panel.Enabled = true;
+                            ConnectionFailed_Label.Visible = false;
+                            ReloadConnect_Timer.Enabled = false;
+                        });
+                    }
+                    catch { }
+                }
+                catch (SocketException)
+                {
+                    try
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            ConnectionFailed_Label.Visible = true;
+                            ReloadConnect_Timer.Enabled = true;
+                        });
+                    }
+                    catch { }
+                }
+            });
+
         }
 
         private void Signup()
@@ -33,7 +64,16 @@ namespace Client
             string username = SignupUsername_TextBox.Text;
             string password = SignupPassword_TextBox.Text;
             SignupMessage signup = new SignupMessage(username, password);
-            Message signupResponse = StreamHelper.Communicate(clientStream, RequestCodes.SIGNUP, signup);
+            Message signupResponse = new Message();
+            try
+            {
+                signupResponse = StreamHelper.Communicate(clientStream, RequestCodes.SIGNUP, signup);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
 
             switch (signupResponse.code)
             {
@@ -59,8 +99,16 @@ namespace Client
             string username = LoginUsername_TextBox.Text;
             string password = LoginPassword_TextBox.Text;
             LoginMessage login = new LoginMessage(username, password);
-            Message loginResponse = StreamHelper.Communicate(clientStream, RequestCodes.LOGIN, login);
-
+            Message loginResponse = new Message();
+            try
+            {
+                loginResponse = StreamHelper.Communicate(clientStream, RequestCodes.LOGIN, login);
+            }
+            catch (IOException)
+            {
+                Utils.ConnectionAbortMessageBox();
+                Close();
+            }
             switch (loginResponse.code)
             {
                 case ResponseCodes.LOGIN_SUCCESS:
@@ -112,7 +160,7 @@ namespace Client
                 Login_Button.Enabled = false;
                 RefreshCredentialsVerify();
             }
-            
+
             foreach (var loginElement in loginElements)
             {
                 loginElement.Enabled = methodIsLogin;
@@ -178,14 +226,14 @@ namespace Client
                 UsernameVerifyLabel_Label.ForeColor = Color.Green;
             }
 
-            
+
             bool passwordBad = false;
 
             string password = SignupPassword_TextBox.Text;
             bool badPasswordCharacters = false;
             for (int i = 0; i < password.Length && !badPasswordCharacters; i++)
             {
-                if (!(char.IsLetterOrDigit(password[i]) || char.IsPunctuation(password[i]))) 
+                if (!(char.IsLetterOrDigit(password[i]) || char.IsPunctuation(password[i])))
                 {
                     badPasswordCharacters = true;
                 }
@@ -261,6 +309,11 @@ namespace Client
         private void LoginPassword_TextBox_TextChanged(object sender, EventArgs e)
         {
             CheckLoginCredentials();
+        }
+
+        private void ReloadConnect_Timer_Tick(object sender, EventArgs e)
+        {
+            ConnectToServer();
         }
     }
 }

@@ -26,6 +26,8 @@ def parse_message(msg: str) -> Message:
 
 
 def validate_username(username: str) -> bool:
+    if not (3 <= len(username) <= 20):
+        return False
     for c in username:
         if not (c.isalnum() or c == "_"):
             return False
@@ -33,6 +35,8 @@ def validate_username(username: str) -> bool:
 
 
 def validate_password(password: str) -> bool:
+    if not (5 <= len(password) <= 16):
+        return False
     for c in password:
         if not (c.isalnum() or c in string.punctuation):
             return False
