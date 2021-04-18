@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client
+namespace CodeNames
 {
     public partial class LobbyForm : Form
     {
@@ -134,6 +134,11 @@ namespace Client
                 Utils.ConnectionAbortMessageBox();
                 Close();
             }
+        }
+
+        private void LobbyForm_Shown(object sender, EventArgs e)
+        {
+            ReloadPlayersList();
         }
     }
 }

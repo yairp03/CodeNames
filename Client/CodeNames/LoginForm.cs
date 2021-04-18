@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client
+namespace CodeNames
 {
     public partial class LoginForm : Form
     {
@@ -18,10 +18,6 @@ namespace Client
             InitializeComponent();
 
             methodIsLogin = true;
-            Task.Run(() =>
-            {
-                ConnectToServer();
-            });
         }
 
         private void ConnectToServer()
@@ -143,8 +139,6 @@ namespace Client
 
         private void SwitchSigninMethod()
         {
-            Control[] loginElements = { LoginUsername_TextBox, LoginPassword_TextBox };
-            Control[] signupElements = { SignupUsername_TextBox, SignupPassword_TextBox, CredentialsVerify_Panel };
             methodIsLogin = !methodIsLogin;
             SwitchMethod_Button.Text = methodIsLogin ? "<" : ">";
             ClearErrors();
@@ -155,7 +149,7 @@ namespace Client
                 Signup_Button.Enabled = false;
                 foreach (Label vertificationLabel in CredentialsVerify_Panel.Controls)
                 {
-                    vertificationLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+                    vertificationLabel.ForeColor = SystemColors.ControlText;
                 }
             }
             else
@@ -164,14 +158,9 @@ namespace Client
                 RefreshCredentialsVerify();
             }
 
-            foreach (var loginElement in loginElements)
-            {
-                loginElement.Enabled = methodIsLogin;
-            }
-            foreach (var signupElement in signupElements)
-            {
-                signupElement.Enabled = !methodIsLogin;
-            }
+            Login_Panel.Enabled = methodIsLogin;
+            SignUp_Panel.Enabled = !methodIsLogin;
+            CredentialsVerify_Panel.Enabled = !methodIsLogin;
         }
 
         private void ClearErrors()
@@ -315,6 +304,11 @@ namespace Client
         }
 
         private void ReloadConnect_Timer_Tick(object sender, EventArgs e)
+        {
+            ConnectToServer();
+        }
+
+        private void LoginForm_Shown(object sender, EventArgs e)
         {
             ConnectToServer();
         }

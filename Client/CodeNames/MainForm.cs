@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client
+namespace CodeNames
 {
     public partial class MainForm : Form
     {

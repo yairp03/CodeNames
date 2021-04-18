@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Client
+namespace CodeNames
 {
     public partial class CardLabel : Label
     {

@@ -1,7 +1,7 @@
 ﻿
-namespace Client
+namespace CodeNames
 {
-    partial class JoinGameButton
+    partial class CardLabel
     {
         /// <summary>
         /// Required designer variable.

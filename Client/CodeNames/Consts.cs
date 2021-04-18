@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Client
+namespace CodeNames
 {
     class Consts
     {

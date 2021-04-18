@@ -1,5 +1,5 @@
 ﻿
-namespace Client
+namespace CodeNames
 {
     partial class GameForm
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace Client
+namespace CodeNames
 {
     partial class LobbyForm
     {
@@ -107,7 +107,6 @@ namespace Client
             // 
             // PlayersListReload_Timer
             // 
-            this.PlayersListReload_Timer.Enabled = true;
             this.PlayersListReload_Timer.Interval = 1000;
             this.PlayersListReload_Timer.Tick += new System.EventHandler(this.PlayersListReload_Timer_Tick);
             // 
@@ -139,6 +138,7 @@ namespace Client
             this.Name = "LobbyForm";
             this.Text = "לובי";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LobbyForm_FormClosed);
+            this.Shown += new System.EventHandler(this.LobbyForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

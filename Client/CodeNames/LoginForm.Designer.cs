@@ -1,5 +1,5 @@
 ﻿
-namespace Client
+namespace CodeNames
 {
     partial class LoginForm
     {
@@ -47,20 +47,20 @@ namespace Client
             this.UsernameLegalChars_Label = new System.Windows.Forms.Label();
             this.UsernameVerifyLabel_Label = new System.Windows.Forms.Label();
             this.LoginSignup_Panel = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.Login_Panel = new System.Windows.Forms.Panel();
             this.LoginUsername_TextBox = new System.Windows.Forms.TextBox();
             this.LoginPassword_TextBox = new System.Windows.Forms.TextBox();
             this.LoginUsername_Label = new System.Windows.Forms.Label();
             this.Login_Button = new System.Windows.Forms.Button();
             this.LoginPassword_Label = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.SignUp_Panel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ConnectionFailed_Label = new System.Windows.Forms.Label();
             this.ReloadConnect_Timer = new System.Windows.Forms.Timer(this.components);
             this.CredentialsVerify_Panel.SuspendLayout();
             this.LoginSignup_Panel.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.Login_Panel.SuspendLayout();
+            this.SignUp_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,7 +124,6 @@ namespace Client
             // 
             // SignupPassword_TextBox
             // 
-            this.SignupPassword_TextBox.Enabled = false;
             this.SignupPassword_TextBox.Font = new System.Drawing.Font("Berlin Sans FB", 15.75F);
             this.SignupPassword_TextBox.Location = new System.Drawing.Point(19, 127);
             this.SignupPassword_TextBox.MaxLength = 16;
@@ -136,7 +135,6 @@ namespace Client
             // 
             // SignupUsername_TextBox
             // 
-            this.SignupUsername_TextBox.Enabled = false;
             this.SignupUsername_TextBox.Font = new System.Drawing.Font("Berlin Sans FB", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SignupUsername_TextBox.Location = new System.Drawing.Point(19, 51);
             this.SignupUsername_TextBox.MaxLength = 20;
@@ -243,26 +241,26 @@ namespace Client
             this.LoginSignup_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LoginSignup_Panel.Controls.Add(this.SwitchMethod_Button);
             this.LoginSignup_Panel.Controls.Add(this.CredentialsVerify_Panel);
-            this.LoginSignup_Panel.Controls.Add(this.panel2);
-            this.LoginSignup_Panel.Controls.Add(this.panel3);
+            this.LoginSignup_Panel.Controls.Add(this.SignUp_Panel);
+            this.LoginSignup_Panel.Controls.Add(this.Login_Panel);
             this.LoginSignup_Panel.Enabled = false;
             this.LoginSignup_Panel.Location = new System.Drawing.Point(34, 137);
             this.LoginSignup_Panel.Name = "LoginSignup_Panel";
             this.LoginSignup_Panel.Size = new System.Drawing.Size(731, 275);
             this.LoginSignup_Panel.TabIndex = 15;
             // 
-            // panel3
+            // Login_Panel
             // 
-            this.panel3.Controls.Add(this.LoginUsername_TextBox);
-            this.panel3.Controls.Add(this.LoginPassword_TextBox);
-            this.panel3.Controls.Add(this.LoginUsername_Label);
-            this.panel3.Controls.Add(this.LoginErrorMessage_Label);
-            this.panel3.Controls.Add(this.Login_Button);
-            this.panel3.Controls.Add(this.LoginPassword_Label);
-            this.panel3.Location = new System.Drawing.Point(518, 18);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(190, 237);
-            this.panel3.TabIndex = 12;
+            this.Login_Panel.Controls.Add(this.LoginUsername_TextBox);
+            this.Login_Panel.Controls.Add(this.LoginPassword_TextBox);
+            this.Login_Panel.Controls.Add(this.LoginUsername_Label);
+            this.Login_Panel.Controls.Add(this.LoginErrorMessage_Label);
+            this.Login_Panel.Controls.Add(this.Login_Button);
+            this.Login_Panel.Controls.Add(this.LoginPassword_Label);
+            this.Login_Panel.Location = new System.Drawing.Point(518, 18);
+            this.Login_Panel.Name = "Login_Panel";
+            this.Login_Panel.Size = new System.Drawing.Size(190, 237);
+            this.Login_Panel.TabIndex = 12;
             // 
             // LoginUsername_TextBox
             // 
@@ -299,6 +297,7 @@ namespace Client
             // Login_Button
             // 
             this.Login_Button.AutoSize = true;
+            this.Login_Button.Enabled = false;
             this.Login_Button.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Login_Button.Location = new System.Drawing.Point(19, 186);
             this.Login_Button.Name = "Login_Button";
@@ -320,18 +319,19 @@ namespace Client
             this.LoginPassword_Label.TabIndex = 11;
             this.LoginPassword_Label.Text = "סיסמא:";
             // 
-            // panel2
+            // SignUp_Panel
             // 
-            this.panel2.Controls.Add(this.SignupUsername_TextBox);
-            this.panel2.Controls.Add(this.SignupPassword_TextBox);
-            this.panel2.Controls.Add(this.SignupErrorMessage_Label);
-            this.panel2.Controls.Add(this.SignupUsername_Label);
-            this.panel2.Controls.Add(this.Signup_Button);
-            this.panel2.Controls.Add(this.SignupPassword_Label);
-            this.panel2.Location = new System.Drawing.Point(199, 18);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 237);
-            this.panel2.TabIndex = 0;
+            this.SignUp_Panel.Controls.Add(this.SignupUsername_TextBox);
+            this.SignUp_Panel.Controls.Add(this.SignupPassword_TextBox);
+            this.SignUp_Panel.Controls.Add(this.SignupErrorMessage_Label);
+            this.SignUp_Panel.Controls.Add(this.SignupUsername_Label);
+            this.SignUp_Panel.Controls.Add(this.Signup_Button);
+            this.SignUp_Panel.Controls.Add(this.SignupPassword_Label);
+            this.SignUp_Panel.Enabled = false;
+            this.SignUp_Panel.Location = new System.Drawing.Point(199, 18);
+            this.SignUp_Panel.Name = "SignUp_Panel";
+            this.SignUp_Panel.Size = new System.Drawing.Size(200, 237);
+            this.SignUp_Panel.TabIndex = 0;
             // 
             // pictureBox1
             // 
@@ -374,14 +374,15 @@ namespace Client
             this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.Text = "התחברות";
+            this.Shown += new System.EventHandler(this.LoginForm_Shown);
             this.CredentialsVerify_Panel.ResumeLayout(false);
             this.CredentialsVerify_Panel.PerformLayout();
             this.LoginSignup_Panel.ResumeLayout(false);
             this.LoginSignup_Panel.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.Login_Panel.ResumeLayout(false);
+            this.Login_Panel.PerformLayout();
+            this.SignUp_Panel.ResumeLayout(false);
+            this.SignUp_Panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -405,13 +406,13 @@ namespace Client
         private System.Windows.Forms.Label UsernameLegalChars_Label;
         private System.Windows.Forms.Label UsernameVerifyLabel_Label;
         private System.Windows.Forms.Panel LoginSignup_Panel;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel Login_Panel;
         private System.Windows.Forms.TextBox LoginUsername_TextBox;
         private System.Windows.Forms.TextBox LoginPassword_TextBox;
         private System.Windows.Forms.Label LoginUsername_Label;
         private System.Windows.Forms.Button Login_Button;
         private System.Windows.Forms.Label LoginPassword_Label;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel SignUp_Panel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label ConnectionFailed_Label;
         private System.Windows.Forms.Timer ReloadConnect_Timer;
