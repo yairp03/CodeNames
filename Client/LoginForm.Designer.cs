@@ -69,7 +69,7 @@ namespace Client
             this.LoginErrorMessage_Label.AutoSize = true;
             this.LoginErrorMessage_Label.Font = new System.Drawing.Font("Berlin Sans FB", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginErrorMessage_Label.ForeColor = System.Drawing.Color.Red;
-            this.LoginErrorMessage_Label.Location = new System.Drawing.Point(569, 233);
+            this.LoginErrorMessage_Label.Location = new System.Drawing.Point(19, 85);
             this.LoginErrorMessage_Label.Name = "LoginErrorMessage_Label";
             this.LoginErrorMessage_Label.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.LoginErrorMessage_Label.Size = new System.Drawing.Size(0, 21);
@@ -80,7 +80,7 @@ namespace Client
             this.SignupErrorMessage_Label.AutoSize = true;
             this.SignupErrorMessage_Label.Font = new System.Drawing.Font("Berlin Sans FB", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SignupErrorMessage_Label.ForeColor = System.Drawing.Color.Red;
-            this.SignupErrorMessage_Label.Location = new System.Drawing.Point(249, 233);
+            this.SignupErrorMessage_Label.Location = new System.Drawing.Point(19, 85);
             this.SignupErrorMessage_Label.Name = "SignupErrorMessage_Label";
             this.SignupErrorMessage_Label.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.SignupErrorMessage_Label.Size = new System.Drawing.Size(0, 21);
@@ -243,8 +243,8 @@ namespace Client
             this.LoginSignup_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LoginSignup_Panel.Controls.Add(this.SwitchMethod_Button);
             this.LoginSignup_Panel.Controls.Add(this.CredentialsVerify_Panel);
-            this.LoginSignup_Panel.Controls.Add(this.panel3);
             this.LoginSignup_Panel.Controls.Add(this.panel2);
+            this.LoginSignup_Panel.Controls.Add(this.panel3);
             this.LoginSignup_Panel.Enabled = false;
             this.LoginSignup_Panel.Location = new System.Drawing.Point(34, 137);
             this.LoginSignup_Panel.Name = "LoginSignup_Panel";
@@ -256,6 +256,7 @@ namespace Client
             this.panel3.Controls.Add(this.LoginUsername_TextBox);
             this.panel3.Controls.Add(this.LoginPassword_TextBox);
             this.panel3.Controls.Add(this.LoginUsername_Label);
+            this.panel3.Controls.Add(this.LoginErrorMessage_Label);
             this.panel3.Controls.Add(this.Login_Button);
             this.panel3.Controls.Add(this.LoginPassword_Label);
             this.panel3.Location = new System.Drawing.Point(518, 18);
@@ -323,6 +324,7 @@ namespace Client
             // 
             this.panel2.Controls.Add(this.SignupUsername_TextBox);
             this.panel2.Controls.Add(this.SignupPassword_TextBox);
+            this.panel2.Controls.Add(this.SignupErrorMessage_Label);
             this.panel2.Controls.Add(this.SignupUsername_Label);
             this.panel2.Controls.Add(this.Signup_Button);
             this.panel2.Controls.Add(this.SignupPassword_Label);
@@ -366,8 +368,6 @@ namespace Client
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.ConnectionFailed_Label);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.SignupErrorMessage_Label);
-            this.Controls.Add(this.LoginErrorMessage_Label);
             this.Controls.Add(this.LoginSignup_Panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

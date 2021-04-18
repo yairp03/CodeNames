@@ -18,7 +18,10 @@ namespace Client
             InitializeComponent();
 
             methodIsLogin = true;
-            ConnectToServer();
+            Task.Run(() =>
+            {
+                ConnectToServer();
+            });
         }
 
         private void ConnectToServer()
