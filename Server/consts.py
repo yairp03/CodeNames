@@ -15,7 +15,7 @@ class Consts:
     BOARD_LENGTH = 5
     BOARD_WIDTH = 5
     CARDS_AMOUNT = BOARD_LENGTH * BOARD_WIDTH
-    BASE_TEAM_AMOUNT = 7
+    BASE_TEAM_AMOUNT = 8
     BOMBS_AMOUNT = 1
     BLANK_AMOUNT = CARDS_AMOUNT - BASE_TEAM_AMOUNT * 2 - 1 - BOMBS_AMOUNT
 
@@ -39,9 +39,6 @@ class RequestCodes:
     GAME_STATE = 310
     REVEAL_CARD = 320
     SEND_WORD = 330
-
-    # Statistics
-    GET_STATISTICS = 410
 
 
 class ResponseCodes:
@@ -86,9 +83,6 @@ class ResponseCodes:
     INVALID_WORD = 334
     INVALID_CARDS_AMOUNT = 335
 
-    # Statistics
-    STATISTICS_DATA = 411
-
     BAD_MESSAGE = 999
 
 
@@ -111,7 +105,6 @@ _string_codes = {
     RequestCodes.START_GAME: "Start game",
     RequestCodes.LEAVE_ROOM: "Leave room",
     RequestCodes.LOBBY_UPDATES: "Lobby updates",
-    RequestCodes.GET_STATISTICS: "Get Statistics",
     # Responses
     ResponseCodes.LOGIN_SUCCESS: "Login Success",
     ResponseCodes.LOGIN_USERNAME_DOESNT_EXISTS: "Login username doesn't exists",
@@ -132,10 +125,19 @@ _string_codes = {
     ResponseCodes.NOT_ROOM_HOST: "Not room admin",
     ResponseCodes.NOT_ENOUGH_PLAYERS: "Not enough players",
     ResponseCodes.LEAVE_ROOM_SUCCESS: "Leave room success",
-    ResponseCodes.STATISTICS_DATA: "Statistics Data",
     ResponseCodes.LOBBY_UPDATE: "Lobby update",
     ResponseCodes.LOBBY_STARTED: "Lobby started",
     ResponseCodes.LOBBY_DELETED: "Lobby deleted",
+    ResponseCodes.GAME_STATE: "Game State",
+    ResponseCodes.REVEAL_SUCCESS: "Reveal Card",
+    ResponseCodes.REVEAL_NOT_YOUR_TURN: "Reveal not your turn",
+    ResponseCodes.WAIT_FOR_WORD: "Wait for word",
+    ResponseCodes.CARD_ALREADY_REVEALED: "Card already revealed",
+    ResponseCodes.SEND_WORD_SUCCESS: "Send word success",
+    ResponseCodes.WORD_NOT_YOUR_TURN: "Word not your turn",
+    ResponseCodes.WORD_ALREADY_SENT: "Word already sent",
+    ResponseCodes.INVALID_WORD: "Invalid word",
+    ResponseCodes.INVALID_CARDS_AMOUNT: "Invalid cards amount",
     ResponseCodes.BAD_MESSAGE: "Bad Message",
 }
 

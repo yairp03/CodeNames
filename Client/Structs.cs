@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client
 {
@@ -93,5 +89,51 @@ namespace Client
     {
         public List<string> reds;
         public List<string> blues;
+    }
+
+    public struct WordCard
+    {
+        public string word;
+        public CardType type;
+        public bool revealed;
+    }
+
+    public struct GameState
+    {
+        public bool deleted;
+        public bool ended;
+        public CardType winner;
+        public CardType turn;
+        public string curr_word;
+        public int curr_revealed;
+        public int curr_cards;
+        public List<List<WordCard>> board;
+
+        public static bool operator ==(GameState a, GameState b) => a.Equals(b);
+        public static bool operator !=(GameState a, GameState b) => !(a == b);
+    }
+
+    public struct SendWordRequest
+    {
+        public string word;
+        public int amount;
+
+        public SendWordRequest(string word, int amount)
+        {
+            this.word = word;
+            this.amount = amount;
+        }
+    }
+
+    public struct GuessWordRequest
+    {
+        public int row;
+        public int column;
+
+        public GuessWordRequest(int row, int column)
+        {
+            this.row = row;
+            this.column = column;
+        }
     }
 }

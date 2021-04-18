@@ -4,6 +4,7 @@ from consts import *
 from database import Database
 from _utils import validate_username, validate_password, extract_data, validate_word
 from typing import TYPE_CHECKING
+from base64 import b64decode
 
 if TYPE_CHECKING:
     from server import Server
@@ -56,11 +57,11 @@ class Client:
                 if req.code == RequestCodes.GAME_STATE:
                     return self.game_state()
                 if req.code == RequestCodes.REVEAL_CARD:
-                    return self.reveal_card()
+                    return self.reveal_card(req.data)
                 if req.code == RequestCodes.LEAVE_ROOM:
                     return self.leave_room()
                 if req.code == RequestCodes.SEND_WORD:
-                    return self.send_word()
+                    return self.send_word(req.data)
 
         return BAD_MESSAGE_CODE
 
@@ -165,8 +166,8 @@ class Client:
         return Message(ResponseCodes.LOBBY_STARTED, self.game_room.get_teams())
 
     def leave_room(self) -> Message:
-        if self.game_room.host == self.username or (
-            self.game_room.started and not self.game_room.deleted
+        if not self.game_room.deleted and (
+            self.game_room.host == self.username or self.game_room.started
         ):
             self.game_room.deleted = True
             self.server.remove_game(self.game_room)
@@ -188,7 +189,9 @@ class Client:
     def game_state(self) -> Message:
         return Message(
             ResponseCodes.GAME_STATE,
-            self.game_room.get_state(self.game_room.host == self.username),
+            self.game_room.get_state(
+                self.game_room.is_manager(self.username, self.team)
+            ),
         )
 
     def reveal_card(self, data: dict) -> Message:
@@ -201,7 +204,7 @@ class Client:
         row, column = data_list
         if self.game_room.is_revealed(row, column):
             return Message(ResponseCodes.CARD_ALREADY_REVEALED)
-        self.game_room.reveal_card()
+        self.game_room.reveal_card(row, column)
 
         return Message(ResponseCodes.REVEAL_SUCCESS)
 
@@ -213,8 +216,10 @@ class Client:
         if not (data_list := extract_data(data, "word", "amount")):
             return BAD_MESSAGE_DATA
         word, amount = data_list
+        word = b64decode(word).decode()
         if not validate_word(word):
             return Message(ResponseCodes.INVALID_WORD)
         if not (1 <= amount <= self.game_room.remains[self.team]):
             return Message(ResponseCodes.INVALID_CARDS_AMOUNT)
         self.game_room.update_word(word, amount)
+        return Message(ResponseCodes.SEND_WORD_SUCCESS)

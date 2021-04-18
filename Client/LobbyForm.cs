@@ -1,12 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,13 +14,13 @@ namespace Client
         public bool enterGame;
         public StartGameResponse teams;
 
-        public LobbyForm(User user, string admin, int maxPlayers)
+        public LobbyForm(User user, string host, int maxPlayers)
         {
             InitializeComponent();
 
             this.user = user;
             this.maxPlayers = maxPlayers;
-            OnlyHost_Label.Enabled = !(user.username == admin);
+            OnlyHost_Label.Enabled = !(user.username == host);
             enterGame = false;
         }
 
@@ -89,7 +83,7 @@ namespace Client
             return currPlayers >= Consts.GAME_MIN_PLAYERS;
         }
 
-        private void Logout_Button_Click(object sender, EventArgs e)
+        private void ExitLobby_Button_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -97,11 +91,15 @@ namespace Client
         private void LobbyForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             PlayersListReload_Timer.Enabled = false;
-            StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+            if (!enterGame)
+            {
+                StreamHelper.Communicate(user.clientStream, RequestCodes.LEAVE_ROOM);
+            }
         }
 
         private void StartGame_Button_Click(object sender, EventArgs e)
         {
+            StartGame_Button.Enabled = false;
             StreamHelper.Communicate(user.clientStream, RequestCodes.START_GAME);
         }
     }

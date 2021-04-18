@@ -30,7 +30,8 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.Logout_Button = new System.Windows.Forms.Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LobbyForm));
+            this.ExitLobby_Button = new System.Windows.Forms.Button();
             this.Players_Panel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.PlayersAmount_Label = new System.Windows.Forms.Label();
@@ -40,18 +41,18 @@ namespace Client
             this.NotEnoughPlayers_Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // Logout_Button
+            // ExitLobby_Button
             // 
-            this.Logout_Button.AutoSize = true;
-            this.Logout_Button.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Logout_Button.Location = new System.Drawing.Point(12, 410);
-            this.Logout_Button.Name = "Logout_Button";
-            this.Logout_Button.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.Logout_Button.Size = new System.Drawing.Size(75, 28);
-            this.Logout_Button.TabIndex = 1;
-            this.Logout_Button.Text = "יציאה";
-            this.Logout_Button.UseVisualStyleBackColor = true;
-            this.Logout_Button.Click += new System.EventHandler(this.Logout_Button_Click);
+            this.ExitLobby_Button.AutoSize = true;
+            this.ExitLobby_Button.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitLobby_Button.Location = new System.Drawing.Point(12, 410);
+            this.ExitLobby_Button.Name = "ExitLobby_Button";
+            this.ExitLobby_Button.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.ExitLobby_Button.Size = new System.Drawing.Size(75, 28);
+            this.ExitLobby_Button.TabIndex = 1;
+            this.ExitLobby_Button.Text = "יציאה";
+            this.ExitLobby_Button.UseVisualStyleBackColor = true;
+            this.ExitLobby_Button.Click += new System.EventHandler(this.ExitLobby_Button_Click);
             // 
             // Players_Panel
             // 
@@ -131,11 +132,12 @@ namespace Client
             this.Controls.Add(this.PlayersAmount_Label);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Players_Panel);
-            this.Controls.Add(this.Logout_Button);
+            this.Controls.Add(this.ExitLobby_Button);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "LobbyForm";
-            this.Text = "LobbyForm";
+            this.Text = "לובי";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LobbyForm_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -144,7 +146,7 @@ namespace Client
 
         #endregion
 
-        private System.Windows.Forms.Button Logout_Button;
+        private System.Windows.Forms.Button ExitLobby_Button;
         private System.Windows.Forms.Panel Players_Panel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label PlayersAmount_Label;

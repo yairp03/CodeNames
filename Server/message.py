@@ -7,7 +7,11 @@ class Message:
         self.data = data
 
     def __str__(self):
-        return f"{code_to_string(self.code)}: {str(str(self.data).encode())[1:]}"
+        return (
+            f"{code_to_string(self.code)}: {str(str(self.data).encode())[1:]}"
+            if self.code != 311
+            else "Game State"
+        )
 
     def __bool__(self):
         return self.code != 0

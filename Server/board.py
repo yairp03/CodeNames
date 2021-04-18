@@ -1,15 +1,16 @@
 from consts import Consts
-from enum import Enum, auto
+from enum import IntEnum
 from typing import List
 from random import random, sample
+from base64 import b64encode
 
 
-class CardType(Enum):
-    NONE = auto()
-    BLANK = auto()
-    RED = auto()
-    BLUE = auto()
-    BOMB = auto()
+class CardType(IntEnum):
+    NONE = 0
+    BLANK = 1
+    RED = 2
+    BLUE = 3
+    BOMB = 4
 
     def op(self):
         return CardType.RED if self is CardType.BLUE else CardType.BLUE
@@ -20,6 +21,13 @@ class WordCard:
         self.word = word
         self.type = type
         self.revealed = False
+
+    def to_dict(self):
+        return {
+            "word": b64encode(self.word.encode()).decode(),
+            "type": self.type,
+            "revealed": self.revealed,
+        }
 
 
 class Board:
@@ -42,23 +50,27 @@ class Board:
         i = 0
         for _ in range(Consts.BASE_TEAM_AMOUNT + 1):
             self.board[indexes[i] // Consts.BOARD_LENGTH][
-                i % Consts.BOARD_WIDTH
+                indexes[i] % Consts.BOARD_WIDTH
             ].type = self.more
+            print(i, indexes[i] // Consts.BOARD_LENGTH, i % Consts.BOARD_WIDTH)
             i += 1
         for _ in range(Consts.BASE_TEAM_AMOUNT):
             self.board[indexes[i] // Consts.BOARD_LENGTH][
-                i % Consts.BOARD_WIDTH
+                indexes[i] % Consts.BOARD_WIDTH
             ].type = self.more.op()
             i += 1
         self.board[indexes[i] // Consts.BOARD_LENGTH][
-            i % Consts.BOARD_WIDTH
+            indexes[i] % Consts.BOARD_WIDTH
         ].type = CardType.BOMB
 
-    def tolist(self, manager=False) -> List[List[WordCard]]:
-        if manager:
-            return self.board
+    def to_json(self, manager=False) -> List[List[WordCard]]:
         return [
-            [wc if wc.revealed else WordCard(wc.word, CardType.NONE) for wc in r]
+            [
+                (
+                    wc if wc.revealed or manager else WordCard(wc.word, CardType.NONE)
+                ).to_dict()
+                for wc in r
+            ]
             for r in self.board
         ]
 

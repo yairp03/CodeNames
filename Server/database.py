@@ -16,6 +16,9 @@ class _User(_Base):
     username = Column(String)
     password = Column(String)
 
+    def __repr__(self) -> str:
+        return str((self.id, self.username, self.password))
+
 
 class _Word(_Base):
     __tablename__ = "word"
@@ -41,10 +44,8 @@ class Database:
             return (
                 len(
                     cls._db.query(_User)
-                    .filter(
-                        _User.username == username
-                        and _User.password == md5(password.encode()).hexdigest()
-                    )
+                    .filter(_User.username == username)
+                    .filter(_User.password == md5(password.encode()).hexdigest())
                     .all()
                 )
                 == 1
@@ -70,7 +71,7 @@ class Database:
 
     @classmethod
     def get_words(cls, amount=-1):
-        words = cls._db.query(_Word).all()
+        words = list(cls._words)
         if 1 <= amount <= len(words):
             words = random.sample(words, amount)
         return [w.word for w in words]
@@ -78,5 +79,7 @@ class Database:
     @classmethod
     def add_words(cls, *words):
         for w in words:
-            cls._db.add(_Word(word=w))
+            if w not in cls._words:
+                cls._words.add(w)
+                cls._db.add(_Word(word=w))
         cls._db.commit()

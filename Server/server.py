@@ -12,7 +12,7 @@ from _utils import parse_message
 
 
 class Server:
-    def __init__(self, port):
+    def __init__(self, port: int):
         self.port = port
         self.active_users = []
         self.game_rooms = []

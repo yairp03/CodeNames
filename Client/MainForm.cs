@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -140,9 +136,10 @@ namespace Client
             lobby.ShowDialog();
             if (lobby.enterGame)
             {
-                GameForm game = new GameForm(lobby.teams);
+                GameForm game = new GameForm(user, lobby.teams);
                 game.ShowDialog();
             }
+            ReloadLobbies();
             Show();
         }
     }

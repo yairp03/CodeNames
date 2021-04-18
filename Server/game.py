@@ -3,6 +3,8 @@ import random
 from board import Board, CardType, WordCard
 from typing import List, Union, Dict
 from consts import Consts
+from math import ceil
+from base64 import b64encode
 
 
 class GameRoom:
@@ -15,7 +17,6 @@ class GameRoom:
         self.game_board = None
         self.remains = None
         self.started = False
-        self.ended = False
         self.winner = CardType.NONE
         self.deleted = False
         self.turn = None
@@ -47,9 +48,7 @@ class GameRoom:
             self.remains[self.game_board.more] += 1
             rand_users = list(self.players)
             random.shuffle(rand_users)
-            half = len(rand_users) // 2 + (
-                1 if self.game_board.more == CardType.RED else 0
-            )
+            half = ceil(len(rand_users) / 2)
             self.reds, self.blues = rand_users[:half], rand_users[half:]
             self.turn = self.game_board.more
             self.started = True
@@ -60,13 +59,12 @@ class GameRoom:
     def get_state(self, manager=False) -> Dict[str, Union[bool, List[List[WordCard]]]]:
         return {
             "deleted": self.deleted,
-            "ended": self.ended,
             "winner": self.winner,
-            "red_turn": self.turn == CardType.RED,
-            "curr_word": self.curr_word,
+            "turn": self.turn,
+            "curr_word": b64encode(self.curr_word.encode()).decode(),
             "curr_revealed": self.curr_revealed,
             "curr_cards": self.curr_cards,
-            "board": self.game_board.tolist(manager or self.ended),
+            "board": self.game_board.to_json(manager or self.deleted),
         }
 
     def which_team(self, username: str):
@@ -87,15 +85,15 @@ class GameRoom:
             if self.curr_revealed == self.curr_cards:
                 if self.remains[self.turn] == 0:
                     self.winner = self.turn
-                    self.ended = True
+                    self.deleted = True
                 else:
                     self.switch_turn()
         elif card.type == CardType.BOMB:
             self.winner = self.turn.op()
-            self.ended = True
+            self.deleted = True
         elif card.type == self.turn.op() and self.remains[card.type] == 0:
             self.winner = card.type
-            self.ended = True
+            self.deleted = True
         else:
             self.switch_turn()
 

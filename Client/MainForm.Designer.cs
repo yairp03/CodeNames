@@ -29,6 +29,7 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Welcome_Label = new System.Windows.Forms.Label();
             this.Logout_Button = new System.Windows.Forms.Button();
             this.DeleteUser_Button = new System.Windows.Forms.Button();
@@ -216,6 +217,7 @@ namespace Client
             this.Controls.Add(this.Logout_Button);
             this.Controls.Add(this.Welcome_Label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "חלון ראשי";

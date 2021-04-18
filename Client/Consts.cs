@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Client
 {
@@ -38,9 +33,6 @@ namespace Client
         public const int GAME_STATE = 310;
         public const int REVEAL_CARD = 320;
         public const int SEND_WORD = 330;
-
-        // Statistics
-        public const int GET_STATISTICS = 410;
     }
 
     class ResponseCodes
@@ -77,23 +69,56 @@ namespace Client
         // Game
         public const int GAME_STATE = 311;
         public const int REVEAL_SUCCESS = 321;
-        public const int REVEAL_FAILED = 322;
-
-        // Statistics
-        public const int STATISTICS_DATA = 411;
+        public const int REVEAL_NOT_YOUR_TURN = 322;
+        public const int WAIT_FOR_WORD = 323;
+        public const int CARD_ALREADY_REVEALED = 324;
+        public const int SEND_WORD_SUCCESS = 331;
+        public const int WORD_NOT_YOUR_TURN = 332;
+        public const int WORD_ALREADY_SENT = 333;
+        public const int INVALID_WORD = 334;
+        public const int INVALID_CARDS_AMOUNT = 335;
 
         public const int BAD_MESSAGE = 999;
     }
 
-    class CardColor
+    public class CardColor
     {
-        public Color BLANK = Color.OldLace;
-        public Color REVEALED_BLANK = Color.NavajoWhite;
-        public Color RED = Color.MistyRose;
-        public Color REVEALED_RED = Color.Tomato;
-        public Color BLUE = Color.Lavender;
-        public Color REVEALED_BLUE = Color.RoyalBlue;
-        public Color BOMB = Color.LightGray;
-        public Color REVEALED_BOMB = Color.DimGray;
+        public static Color BLANK = Color.OldLace;
+        public static Color REVEALED_BLANK = Color.NavajoWhite;
+        public static Color RED = Color.MistyRose;
+        public static Color REVEALED_RED = Color.Tomato;
+        public static Color BLUE = Color.Lavender;
+        public static Color REVEALED_BLUE = Color.RoyalBlue;
+        public static Color BOMB = Color.LightGray;
+        public static Color REVEALED_BOMB = Color.DimGray;
+
+        public static Color GetColor(CardType type, bool revealed)
+        {
+            switch (type)
+            {
+                case CardType.NONE:
+                    return BLANK;
+                case CardType.BLANK:
+                    return revealed ? REVEALED_BLANK : BLANK;
+                case CardType.RED:
+                    return revealed ? REVEALED_RED : RED;
+                case CardType.BLUE:
+                    return revealed ? REVEALED_BLUE : BLUE;
+                case CardType.BOMB:
+                    return revealed ? REVEALED_BOMB : BOMB;
+                default:
+                    break;
+            }
+            return BLANK;
+        }
+    }
+
+    public enum CardType
+    {
+        NONE,
+        BLANK,
+        RED,
+        BLUE,
+        BOMB
     }
 }

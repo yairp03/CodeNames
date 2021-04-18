@@ -1,4 +1,3 @@
-from typing import Union
 from message import Message
 import json
 from consts import Consts
@@ -48,4 +47,4 @@ def extract_data(data: dict, *keys) -> list:
 
 
 def validate_word(word: str) -> bool:
-    return 2 <= len(word) <= 15
+    return 2 <= len(word) <= 15 and all("\u0590" <= c <= "\u05EA" for c in word)

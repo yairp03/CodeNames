@@ -1,14 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -30,6 +23,7 @@ namespace Client
         {
             TcpClient client = new TcpClient();
             IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(Consts.SERVER_IP), Consts.SERVER_PORT);
+            
             client.Connect(serverEndPoint);
             clientStream = client.GetStream();
         }
