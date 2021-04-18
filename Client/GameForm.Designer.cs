@@ -142,7 +142,7 @@ namespace Client
             // 
             this.CurrAmount_NumericUpDown.Location = new System.Drawing.Point(6, 13);
             this.CurrAmount_NumericUpDown.Maximum = new decimal(new int[] {
-            8,
+            9,
             0,
             0,
             0});
